@@ -4,6 +4,15 @@
     --text-color : #2D6670;
 }
 
+*{
+    box-sizing:border-box;
+}
+
 body{
     color:var(--text-color);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    margin:0;
 }
