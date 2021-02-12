@@ -9,6 +9,7 @@
 }
 
 body{
+    background-color:var(--main-background);
     color:var(--text-color);
     display:flex;
     align-items:center;

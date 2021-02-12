@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/style.css">
-    <title>Under Construction</title>
+    <title>Fresh PiVee : Under Construction</title>
 </head>
 <body>
     <h1>Under Construction</h1>
