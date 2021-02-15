@@ -31,6 +31,7 @@ CREATE TABLE `evaluation` (
 	`id_user` INT NOT NULL,
 	`id_upload` INT NOT NULL,
 	`evaluation_type` ENUM('dislike', 'like', 'favorite') NOT NULL,
+	`evaluation_time` DATETIME NOT NULL,
 	PRIMARY KEY (`id_evaluation`)
 );
 
@@ -55,4 +56,3 @@ ALTER TABLE `evaluation` ADD CONSTRAINT `evaluated` FOREIGN KEY (`id_upload`) RE
 ALTER TABLE `comment` ADD CONSTRAINT `commenter` FOREIGN KEY (`id_user`) REFERENCES `user`(`id_user`);
 
 ALTER TABLE `comment` ADD CONSTRAINT `commented` FOREIGN KEY (`id_upload`) REFERENCES `upload`(`id_upload`);
-
