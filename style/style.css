@@ -1,19 +1,50 @@
-:root{
-    --main-background : #A9E5F0;
-    --buttons-color : #61DCF2;
-    --text-color : #2D6670;
+:root {
+	--main-background: #a9e5f0;
+	--buttons-color: #61dcf2;
+	--text-color: #2d6670;
 }
 
-*{
-    box-sizing:border-box;
+* {
+	box-sizing: border-box;
 }
 
-body{
-    background-color:var(--main-background);
-    color:var(--text-color);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:100vh;
-    margin:0;
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	margin: 0;
+}
+header {
+	background: var(--text-color);
+	color: black;
+	justify-content: center;
+	align-items: flex-start;
+	height: 3em;
+	width: 300px;
+}
+
+/******stylisations des liens *******************/
+ul li {
+	text-decoration: none;
+	list-style-type: none;
+}
+/********/
+h1 #titre {
+	font-family: url("/FreshPiVee/documentation/HARRINGT.TTF");
+	color: #fff;
+}
+
+/********stylisations pour les icones ***********/
+img {
+	display: block;
+}
+/***********  menu navigation ****************/
+nav .menu_bas {
+	background: var(--background);
+	text-decoration: none;
+	justify-content: center;
+	align-items: center;
+	height: 3em;
+	width: 300px;
 }
