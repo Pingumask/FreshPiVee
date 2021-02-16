@@ -40,6 +40,7 @@ CREATE TABLE `comment` (
 	`id_user` INT NOT NULL,
 	`id_upload` INT NOT NULL,
 	`comment_time` DATETIME NOT NULL,
+	`comment_content` TEXT NOT NULL,
 	PRIMARY KEY (`id_comment`)
 ) ENGINE=INNODB CHARACTER SET utf8;
 
