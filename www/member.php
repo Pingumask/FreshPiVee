@@ -1,3 +1,9 @@
 <?php
+require_once('./model/user.class.php');
+
 $currentPage="member";
-require_once("view/template.php");
+
+$member = new User();
+$member->getUserFromDb(1);
+
+require_once("./view/template.php");

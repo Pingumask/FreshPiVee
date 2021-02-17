@@ -17,8 +17,10 @@ class User {
             ':id_user'=> $id_user
         );
         $requete_preparee->execute($parametres);
-        $resultat = $requete_preparee->fetch();
-        $this->setUser($resultat['id_user'],$resultat['nickname'],$resultat['email'],$resultat['password'],$resultat['birthday'],$resultat['signed_up']);
+        $resultat = $requete_preparee->fetchObject("User");
+        foreach(get_object_vars($resultat) as $param=>$value){
+            $this->$param = $value;
+        }
     }
     
     public function setUser($id_user, $nickname, $email, $password, $birthday, $signed_up){
