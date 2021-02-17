@@ -1,3 +1,3 @@
 <?php
 $currentPage="avatar";
-require_once("view/avatar.php");
+require_once("view/template.php");

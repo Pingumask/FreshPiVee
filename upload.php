@@ -1,3 +1,3 @@
 <?php
 $currentPage="upload";
-require_once("view/upload.php");
+require_once("view/template.php");
