@@ -1,3 +1,3 @@
 <?php
 $currentPage="search";
-require_once("view/tamplate.php");
+require_once("view/template.php");

@@ -1,3 +1,3 @@
 <?php
-$currentPage="avatar";
+$currentPage="member";
 require_once("view/template.php");
