@@ -1,0 +1,1 @@
+ALTER TABLE upload RENAME COLUMN uploader TO id_uploader;

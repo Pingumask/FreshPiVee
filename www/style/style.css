@@ -59,19 +59,19 @@ h1 a{
     margin:10px;
 }
 
-#menu_haut input{
+#top_menu input{
     display:none;
 }
 
-#menu_haut .logo h1{
+#top_menu .logo h1{
     display:none;
 }
 
-#menu_bas .logo{
+#nav_menu .logo{
     display: none;
 }
 
-#menu_bas span{
+#nav_menu span{
     display:none;
 }
 
@@ -89,14 +89,14 @@ input[type=submit]{
                                 'menu content';
     }
 
-    #menu_haut{
+    #top_menu{
         grid-area:top;
         justify-content:flex-end;
     }
     
     
 
-    #menu_bas{
+    #nav_menu{
         grid-area:menu;
         justify-content:flex-start;
         align-items:flex-start;
@@ -114,15 +114,15 @@ input[type=submit]{
         width:5vh;
     }    
 
-    #menu_haut .logo{
+    #top_menu .logo{
         display: none;
     }
 
-    #menu_bas .logo img{
+    #nav_menu .logo img{
         margin:0;
     }
 
-    #menu_bas a{
+    #nav_menu a{
         display:flex;
         justify-content:flex-start;
         align-items:center;
@@ -131,12 +131,12 @@ input[type=submit]{
         order:2;
     }
 
-    #menu_bas .logo{
+    #nav_menu .logo{
         display: flex;
         order:0;
     }
 
-    #menu_bas .logo img{        
+    #nav_menu .logo img{        
         height:12vh;
         width:12vh;        
     }
@@ -148,7 +148,7 @@ input[type=submit]{
         padding:10px;
     }
 
-    #menu_bas span{
+    #nav_menu span{
         display:inline;
         padding-left:20px;
     }
@@ -157,11 +157,11 @@ input[type=submit]{
         order:1;
     }
 
-    #menu_haut form{
+    #top_menu form{
         display:flex;
     }
 
-    #menu_haut input{
+    #top_menu input{
         display:block;
         border: none;
         padding:2px;

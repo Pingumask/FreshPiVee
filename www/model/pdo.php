@@ -1,5 +1,5 @@
 <?php
-require_once("./.env/dbconfig.php");
+require_once("./.env/connexion.php");
 // On vérifie les données
 try {
     $database = new PDO('mysql:host=' . DBHOST . ';dbname=' . DBNAME, DBUSER, DBPASSWORD);
