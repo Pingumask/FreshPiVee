@@ -1,1 +1,1 @@
-<h2>avatar : Under Construction</h2>
+<h2>Member : Under Construction</h2>
