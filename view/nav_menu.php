@@ -1,4 +1,4 @@
-<nav id="menu_bas" class="menu">
+<nav id="nav_menu" class="menu">
     <a href="" class="logo">
         <img src="./ressources/image/LogoFresPiVee.svg" alt="logo Fresh PiVee">
         <h1><span class="fresh">Fresh</span><br/><span class="pivee">PiVee</span></h1>

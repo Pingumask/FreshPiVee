@@ -1,4 +1,4 @@
-<header id="menu_haut" class="menu">
+<header id="top_menu" class="menu">
     <a href="" class="logo">
         <img src="./ressources/image/LogoFresPiVee.svg" alt="logo Fresh PiVee">
         <h1>
