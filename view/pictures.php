@@ -1,1 +1,1 @@
-<h2>pictures: Under Construction</h2>
+<h2>Pictures : Under Construction</h2>
