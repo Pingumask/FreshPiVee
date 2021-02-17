@@ -1,3 +1,3 @@
 <?php
-$currentPage="trending";
+$currentPage="videos";
 require_once("view/template.php");
