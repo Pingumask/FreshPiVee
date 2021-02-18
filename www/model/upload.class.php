@@ -24,7 +24,7 @@ class Upload{
     }
     
     //Chargement des informations dans un objet de la classe Upload en dehors de la base de données
-    public function init($id_upload,$uploader,$upload_time,$title, $description,$path,$media_type){
+    public function init($id_upload,$uploader,$upload_time,$title, $description,$path,$media_type):Upload{
         $this->id_upload = $id_upload;
         $this->uploader = $uploader;
         $this->upload_time= $upload_time;
