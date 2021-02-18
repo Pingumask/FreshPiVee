@@ -3,12 +3,13 @@
 require_once("./model/pdo.php");
 class User {
     // Déclarations publique des attributs qui définissent ce qu'est un User et qui correspondent à ses champs dans la bdd
-     public $id_user;
-     public $nickname;
-     public $email;
-     public $password;
-     public $birthday;
-     public $signed_up;
+    const SALT = "%'@jygFUT1646`[|~{#";
+    public $id_user;
+    public $nickname;
+    public $email;
+    private $password;
+    public $birthday;
+    private $signed_up;
 
     // Déclarations des méthodes de la classe User (les fonctions internes à la classe)
 
@@ -24,13 +25,58 @@ class User {
     }
     
     //La fonction init, nous servira de contructeur quand on veut créer un nouvel User hors de la base de données (pour inscrire un nouveau membre par exemple). On n'utilise pas directement __construct() car il interfere avec le fetchObject() que l'on utilise dans notre fonction loadById()
-    public function init(int $id_user = null, string $nickname = null, string $email = null, string $password = null, string $birthday = null, string $signed_up = null):User{
+    public function init(int $id_user = null, string $nickname = null, string $email = null, string $password = null, string $birthday = null):User{
         $this->id_user = $id_user;
         $this->nickname = $nickname;
         $this->email = $email;
-        $this->password = $password;
+        $this->setPassword($password);
         $this->birthday = $birthday;
-        $this->signed_up = $signed_up;
+        if($this->id_user==null){
+            $this->signed_up = date("Y-m-d H:i:s");
+        }        
         return $this;
+    }
+
+    public function getSignedUp():string{
+        return $this->signedUp;
+    }
+
+    //On met le mot de passe en privé, pour obliger à le hasher quand on le modifie
+    public function setPassword(string $newPassword):string{
+        return $this->password = sha1(self::SALT.$newPassword.$this->signed_up);
+    }
+
+    public function getPassword():string{
+        return $this->password;
+    }
+    
+    public function save(){
+        //AVANT d'écrire dans la base de données on vérifie que les données à sauvegarder sont cohérentes
+        //Si c'est cohérent, on update ou insert selon que ce soit un nouvel utilisateur ou pas
+        //sinon, on refuse d'ecrire dans la base
+
+        if($this->id_user!=null){
+            //faire un UPDATE dans la base de données
+            $requete_preparee=$GLOBALS['database']->prepare("UPDATE user SET `nickname`=:nickname, `email`=:email, `password`=:pwd, `birthday`=:birthday, `signed_up`=:signed_up WHERE `id_user`=:id_user");
+            $requete_preparee->execute([
+                ":id_user"=>$this->id_user,
+                ":nickname"=>$this->nickname,
+                ":email"=>$this->email, 
+                ":pwd"=>$this->password, 
+                ":birthday"=>$this->birthday, 
+                ":signed_up"=>$this->signed_up
+            ]);
+        }
+        else{
+            //faire un INSERT dans la BDD
+            $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO user (`nickname`, `email`, `password`, `birthday`, `signed_up`) VALUES(:nickname, :email, :pwd, :birthday, :signed_up)");
+            $requete_preparee->execute([
+                ":nickname"=>$this->nickname,
+                ":email"=>$this->email, 
+                ":pwd"=>$this->password, 
+                ":birthday"=>$this->birthday, 
+                ":signed_up"=>$this->signed_up
+            ]);
+        }
     }
 }
