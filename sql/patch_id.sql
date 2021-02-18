@@ -1,1 +1,1 @@
-ALTER TABLE upload RENAME COLUMN uploader TO id_uploader;
+ALTER TABLE `upload` CHANGE `uploader` `id_uploader` INT(11) NOT NULL;
