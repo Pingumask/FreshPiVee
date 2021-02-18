@@ -23,7 +23,7 @@ class Comment{
         return $requete_preparee->fetchObject("Comment");
     }
 
-	public function init(int $id_comment = null, int $id_user = null, int $id_upload = null, string $comment_time = null, string $comment_content = null){
+	public function init(int $id_comment = null, int $id_user = null, int $id_upload = null, string $comment_time = null, string $comment_content = null):Comment{
         $this->id_comment = $id_comment;
         $this->id_user = $id_user;
         $this->id_upload = $id_upload;

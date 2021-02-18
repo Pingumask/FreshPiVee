@@ -25,7 +25,7 @@ class Follow {
     }
     
     //Voir le commentaire de la fonction similaire dans la classe User pour plus de détails, leur fonctionnement est le même
-    public function init(int $id_follow=null, int $id_follower = null, int $id_followed=null){
+    public function init(int $id_follow=null, int $id_follower = null, int $id_followed=null):Follow{
         $this->id_follow = $id_follow;
         $this->id_follower = $id_follower;
         $this->id_followed = $id_followed;

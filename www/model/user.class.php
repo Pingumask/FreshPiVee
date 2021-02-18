@@ -24,7 +24,7 @@ class User {
     }
     
     //La fonction init, nous servira de contructeur quand on veut créer un nouvel User hors de la base de données (pour inscrire un nouveau membre par exemple). On n'utilise pas directement __construct() car il interfere avec le fetchObject() que l'on utilise dans notre fonction loadById()
-    public function init(int $id_user = null, string $nickname = null, string $email = null, string $password = null, string $birthday = null, string $signed_up = null){
+    public function init(int $id_user = null, string $nickname = null, string $email = null, string $password = null, string $birthday = null, string $signed_up = null):User{
         $this->id_user = $id_user;
         $this->nickname = $nickname;
         $this->email = $email;

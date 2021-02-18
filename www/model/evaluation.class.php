@@ -40,7 +40,6 @@ class Evaluation{
             return $this->upload;
         }
         elseif($this->id_upload!=null){
-            //aller chercher l'uploader dans la base de données
             $this->upload = Upload::loadById($this->id_upload);
             return $this->upload; 
         }
@@ -49,7 +48,7 @@ class Evaluation{
         }
     }
 
-    public function init(int $id_evaluation = null, int $id_user = null, int $id_upload = null, string $evaluation_type = null, string $evaluation_time = null){
+    public function init(int $id_evaluation = null, int $id_user = null, int $id_upload = null, string $evaluation_type = null, string $evaluation_time = null):Evaluation{
         $this->id_evaluation = $id_evaluation;
         $this->id_user = $id_user;
         $this->id_upload = $id_upload;
