@@ -1,6 +1,7 @@
 <?php
 require_once('./model/pdo.php');
 require_once('./model/user.class.php');
+
 class Upload{
     //Liste des attributs qui définissent ce qu'est un upload. Les attributs publics correspondent à ceux de la table dans la base de données
     public $id_upload;
@@ -24,9 +25,9 @@ class Upload{
     }
     
     //Chargement des informations dans un objet de la classe Upload en dehors de la base de données
-    public function init($id_upload,$uploader,$upload_time,$title, $description,$path,$media_type):Upload{
+    public function init($id_upload,$id_uploader,$upload_time,$title, $description,$path,$media_type):Upload{
         $this->id_upload = $id_upload;
-        $this->uploader = $uploader;
+        $this->id_uploader = $id_uploader;
         $this->upload_time= $upload_time;
         $this->title = $title;
         $this->description= $description;
@@ -46,6 +47,38 @@ class Upload{
         }
         else{
             return new User();
+        }
+    }
+
+    public function save(){
+        //AVANT d'écrire dans la base de données on vérifie que les données à sauvegarder sont cohérentes
+        //Si c'est cohérent, on update ou insert selon que ce soit un nouvel utilisateur ou pas
+        //sinon, on refuse d'ecrire dans la base
+
+        if($this->id_upload!=null){
+            //faire un UPDATE dans la base de données
+            $requete_preparee=$GLOBALS['database']->prepare("UPDATE upload SET `id_uploader`=:id_uploader,`upload_time`=:upload_time, `title`=:title, `description`=:descript, `path`=:chemin, `media_type`=:media_type WHERE `id_upload`=:id_upload");
+            $requete_preparee->execute([
+                ":id_upload"=>$this->id_upload,
+                ":id_uploader"=>$this->id_uploader,
+                ":upload_time"=>$this->upload_time, 
+                ":title"=>$this->title, 
+                ":descript"=>$this->description, 
+                ":chemin"=>$this->path,
+                ":media_type"=>$this->media_type
+            ]);
+        }
+        else{
+            //faire un INSERT dans la BDD
+            $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO upload (`id_uploader`,`upload_time`, `title`, `description`, `path`, `media_type`) VALUES(:id_uploader,:upload_time, :title, :descript, :chemin, :media_type)");
+            $requete_preparee->execute([
+                ":id_uploader"=>$this->id_uploader,
+                ":upload_time"=>$this->upload_time,
+                ":title"=>$this->title, 
+                ":descript"=>$this->description, 
+                ":chemin"=>$this->path, 
+                ":media_type"=>$this->media_type
+            ]);
         }
     }
 }
