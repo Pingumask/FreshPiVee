@@ -59,4 +59,25 @@ class Follow {
             return new User();
         }
     }
+
+    public function save(){
+
+        if($this->id_follow!=null){
+            //faire un UPDATE dans la base de données
+            $requete_preparee=$GLOBALS['database']->prepare("UPDATE follow SET `id_follower`=:id_follower, `id_followed`=:id_followed WHERE `id_follow`=:id_follow");
+            $requete_preparee->execute([
+                ":id_follow"=>$this->id_follow, 
+                ":id_follower"=>$this->id_follower, 
+                ":id_followed"=>$this->id_followed, 
+            ]);
+        }
+        else{
+            //faire un INSERT dans la BDD
+            $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO follow (`id_follower`, `id_followed`) VALUES(:id_follower, :id_followed)");
+            $requete_preparee->execute([ 
+                ":id_follower"=>$this->id_follower, 
+                ":id_followed"=>$this->id_followed, 
+            ]);
+        }
+    }
 }
