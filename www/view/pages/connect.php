@@ -7,7 +7,7 @@
 
 <form action="handle_sign_up.php" method="post">
     <h2>Sign Up</h2>
-    <input type="text" name="nickname" placeholder="Nickname" pattern="[a-Z];*{7,}"/>
+    <input type="text" name="nickname" placeholder="Nickname" pattern="[a-Z].*{7,}"/>
     <input type="email" name="email" placeholder="E-mail" patter=".*@.*"/>
     <input type="password" name="password" placeholder="Password"/>
     <input type="password" name="confirmPassword" placeholder="Confirm Password"/>
