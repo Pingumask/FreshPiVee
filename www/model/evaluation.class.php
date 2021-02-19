@@ -56,4 +56,28 @@ class Evaluation{
 		$this->evaluation_time = $evaluation_time;
         return $this;
     }
+
+    public function save(){
+        if($this->id_evaluation!=null){
+            //faire un UPDATE dans la base de données
+            $requete_preparee=$GLOBALS['database']->prepare("UPDATE evaluation SET `id_user`=:id_user, `id_upload`=:id_upload, `evaluation_type`=:evaluation_type, `evaluation_time`=:evaluation_time WHERE `id_evaluation`=:id_evaluation");
+            $requete_preparee->execute([
+                ":id_user"=>$this->id_user, 
+                ":id_upload"=>$this->id_upload,
+                ":id_evaluation"=>$this->id_evaluation,
+                ":evaluation_type"=>$this->evaluation_type, 
+                ":evaluation_time"=>$this->evaluation_time
+            ]);
+        }
+        else{
+            //faire un INSERT dans la BDD
+            $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO evaluation (`id_user`, `id_upload`, `evaluation_type`, `evaluation_time`) VALUES(:id_user, :id_upload, :evaluation_type, :evaluation_time)");
+            $requete_preparee->execute([
+                ":id_user"=>$this->id_user, 
+                ":id_upload"=>$this->id_upload, 
+                ":evaluation_type"=>$this->evaluation_type, 
+                ":evaluation_time"=>$this->evaluation_time
+            ]);
+        }
+    }
 }
