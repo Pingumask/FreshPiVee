@@ -24,3 +24,17 @@ main form input{
 main form h2{
     color:var(--main-background);
 }
+
+.error{
+    border:1px solid red;
+    background:#eeaaaa;
+    margin-bottom:3px;
+    border-radius:3px;
+}
+
+.message{
+    border:1px solid green;
+    background:#a8eebd;
+    margin-bottom:3px;
+    border-radius:3px;
+}
