@@ -1,22 +1,22 @@
 <?php
 require_once("./model/pdo.php");
 require_once("./model/databaseObject.interface.php");
-//La classe follow a besoin de savoir ce qu'est un User pour fonctionner car notre follower et notre followed sont des objets de cette classe.
 require_once("./model/user.class.php");
-class Follow {
-
-    // Déclarations des attributs, les attributs publics correspondent aux champs dans la base de données.
+class Follow implements databaseObject{
     public $id_follow;
-    public $id_follower;
-    public $id_followed;
-    //On crée en plus des attributs privés destinés à recevoir la version complete des utilisateurs correspondant à ces ids. Celà nous permet de ne charger leurs données completes que si l'on y fait appel via les méthodes getFollower et getFollowed que l'on va définir plus bas.
-    private $follower;
-    private $followed;
+    public $id_follower;//L'id du User qui effectue le Follow
+    public $id_followed;//L'id du User qui reçoit le Follow
 
-    // Déclarations des méthodes (les fonctions)
+    private $follower;//Les informations complètes du User qui effectue le Follow
+    private $followed;//Les informations complètes du User qui reçoit le Follow
 
-    //Voir le commentaire de la fonction similaire dans la classe User pour plus de détails, leur fonctionnement est le même
-    public static function loadById(int $id_follow){
+    /**
+     * Récupère dans la base de données le Follow correspondant à l'id demandé
+     * 
+     * @param int $id_follow L'id de l'objet à aller chercher dans la base de données 
+     * @return Follow
+     */
+    public static function loadById(int $id_follow):Follow{
         $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM follow WHERE id_follow=:id_follow");
         $parametres = array(
             ':id_follow'=> $id_follow
@@ -25,7 +25,14 @@ class Follow {
         return $requete_preparee->fetchObject("Follow");
     }
     
-    //Voir le commentaire de la fonction similaire dans la classe User pour plus de détails, leur fonctionnement est le même
+    /**
+     * Crée un nouveau Follow en renseignant toutes ses informations
+     * 
+     * @param int $id_follower L'id du User qui effectue le follow
+     * @param int $id_followed L'id du User qui recoit le follow
+     * 
+     * @return Follow
+     */
     public static function create(int $id_follower = null, int $id_followed=null):Follow{
         $newFollow = new Follow();
         $newFollow->id_follow = null;
@@ -34,7 +41,11 @@ class Follow {
         return $newFollow;
     }
 
-    //On crée un "getter" pour récupérer la version complète du follower si on en a besoin
+    /**
+     * Récupère les informations complètes du User qui effectue le follow
+     * 
+     * @return User
+     */
     public function getFollower():User{
         if($this->follower!=null){//Si notre follower n'est pas vide
             return $this->follower;//Ca veut dire qu'on a déjà fait appel à getFollower() et qu'on a déjà stocké ses informations, on peut donc le renvoyer directement
@@ -48,7 +59,11 @@ class Follow {
         }
     }
 
-    //Le fonctionnement de cette fonction est strictement identique à celui de la fonction getFollower pour l'attribut followed
+    /**
+     * Récupère les informations complètes du User qui recoit le follow
+     * 
+     * @return User
+     */
     public function getFollowed():User{
         if($this->followed!=null){
             return $this->followed;
@@ -62,8 +77,15 @@ class Follow {
         }
     }
 
+    /**
+     * Enregistre en base de données ce Follow
+     * 
+     * Crée un nouveau Follow si $id_follow est null
+     * Met à jour le Follow correspondant si $id_follow n'est pas null
+     * 
+     * @return void
+     */
     public function save():void{
-
         if($this->id_follow!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE follow SET `id_follower`=:id_follower, `id_followed`=:id_followed WHERE `id_follow`=:id_follow");

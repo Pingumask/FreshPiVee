@@ -4,17 +4,22 @@ require_once("./model/databaseObject.interface.php");
 require_once("./model/user.class.php");
 require_once("./model/upload.class.php");
 
-class Comment{
+class Comment implements databaseObject{
     public $id_comment;
-	public $id_user;
-	public $id_upload;
-	public $comment_time;
-    public $comment_content;
+	public $id_user;//L'id du User qui a laissé ce commentaire
+	public $id_upload;//L'id de l'Upload qui a reçu ce commentaire
+	public $comment_time;//Le Datetime auquel ce commentaire a été fait
+    public $comment_content;//Le texte contenu dans ce commentaire
 
-	private $user;
-	private $upload;
+	private $user;//La version complete sous forme d'un objet de la classe User de l'utilisateur qui a laissé ce commentaire
+	private $upload;//La version complete sous forme d'un objet de la classe Upload de l'element qui a été commenté
 
-
+    /**
+     * Récupère dans la base de données le commentaire correspondant à l'id demandé
+     * 
+     * @param int $id_comment L'id de l'objet à aller chercher dans la base de données 
+     * @return Comment
+     */
 	public static function loadById(int $id_comment):Comment{
         $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM comment WHERE id_comment=:id_comment");
         $parametres = array(
@@ -24,6 +29,16 @@ class Comment{
         return $requete_preparee->fetchObject("Comment");
     }
 
+    /**
+     * Crée un nouvel objet de la classe Comment avec tous les champs renseignés pendant la création
+     * 
+     * @param int $id_user L'id de l'utilisateur qui fait le commentaire
+     * @param int $id_upload L'id de l'Upload qui est commenté
+     * @param string $comment_time L'heure de création du commentaire
+     * @param string $comment_content Le texte contenu dans le commentaire
+     * 
+     * @return Comment
+     */
 	public static function create(int $id_user = null, int $id_upload = null, string $comment_time = null, string $comment_content = null):Comment{
         $newComment = new Comment();
         $newComment->id_comment = null;
@@ -34,6 +49,11 @@ class Comment{
         return $newComment;
     }
 
+    /**
+     * Récupère les information completes du User qui a effectué le commentaire
+     * 
+     * @return User
+     */
     public function getUser():User{
         if($this->user!=null){
             return $this->user;
@@ -47,6 +67,11 @@ class Comment{
         }
     }
 
+    /**
+     * Récupére les informations complètes de l'Upload qui est commenté
+     * 
+     * @return Upload
+     */
 	public function getUpload():Upload{
 		if($this->upload!=null){
             return $this->upload;
@@ -58,14 +83,17 @@ class Comment{
         else{
             return new Upload();
         }
-
 	}
 
+    /**
+     * Enregistre en base de données ce Comment
+     * 
+     * Crée un nouveau commentaire si $id_comment est null
+     * Met à jour le commentaire correspondant si $id_comment n'est pas null
+     * 
+     * @return void
+     */
     public function save():void{
-        //AVANT d'écrire dans la base de données on vérifie que les données à sauvegarder sont cohérentes
-        //Si c'est cohérent, on update ou insert selon que ce soit un nouvel utilisateur ou pas
-        //sinon, on refuse d'ecrire dans la base
-
         if($this->id_comment!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE comment SET `id_user`=:id_user,`id_upload`=:id_upload, `comment_time`=:comment_time, `comment_content`=:comment_content WHERE `id_comment`=:id_comment");

@@ -3,19 +3,24 @@ require_once('./model/pdo.php');
 require_once("./model/databaseObject.interface.php");
 require_once('./model/user.class.php');
 
-class Upload{
-    //Liste des attributs qui définissent ce qu'est un upload. Les attributs publics correspondent à ceux de la table dans la base de données
+class Upload implements databaseObject{
     public $id_upload;
-    public $id_uploader;
-    public $upload_time;
-    public $title;
-    public $description;
-    public $path;
-    public $media_type;
-    //Uploader servira à stocker la version complete du User concerné si on a besoin de le récupérer à partir de son id en utilisant la fonction getUploader()
-    private $uploader;
+    public $id_uploader;//L'id du User qui a effectué cet upload
+    public $upload_time;//L'heure à laquelle cet upload a été effectué
+    public $title;//Le titre de cet upload
+    public $description;//La description de cet upload
+    public $path;//Le chemin sur le disque dur vers cet upload
+    public $media_type;//Le type de media de cet upload (picture,video)
 
-    //Chargement d'un objet de la classe Upload à partir de la base de données
+    private $uploader;//Les informations complètes sur le user qui a effectué cet Upload
+
+    /**
+     * Récupère un Upload dans la base de données à partir de son id
+     * 
+     * @param int $id_upload
+     * 
+     * @return Upload
+     */
     public static function loadById(int $id_upload):Upload{
         $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM upload WHERE id_upload=:id_upload");
         $parametres = array(
@@ -25,7 +30,18 @@ class Upload{
         return $requete_preparee->fetchObject("Upload");
     }
     
-    //Chargement des informations dans un objet de la classe Upload en dehors de la base de données
+    /**
+     * Crée un Upload tout en remplissant toutes ses infos
+     * 
+     * @param int $id_uploader L'id du User qui a effectué l'upload
+     * @param string $upload_time L'heure à laquelle l'upload a été effectué
+     * @param string $title Le titre de l'Upload
+     * @param string $description La description de l'upload
+     * @param string $path Le chemin sur le disque dur vers le fichier de cet upload
+     * @param string $media_type Le type de media (picture,video)
+     * 
+     * @return Upload
+     */
     public static function create($id_uploader,$upload_time,$title, $description,$path,$media_type):Upload{
         $newUpload = new Upload();
         $newUpload->id_upload = null;
@@ -38,7 +54,11 @@ class Upload{
         return $newUpload;
     }
 
-    //Récupération des informations complètes du User qui a réalisé l'upload (voir la methode getFollower() de la classe Follow qui est très similaire pour plus de détails)
+    /**
+     * Récupère les informations complètes du User qui a effectué cet upload
+     * 
+     * @return User
+     */
     public function getUploader():User{
         if($this->uploader!=null){
             return $this->uploader;
@@ -52,11 +72,15 @@ class Upload{
         }
     }
 
+    /**
+     * Enregistre en base de données cet Upload
+     * 
+     * Crée un nouvel Upload si $id_upload est vide
+     * Modifie l'upload correspondant à $id_upload dans la base de données si il n'est pas vide
+     * 
+     * @return void
+     */
     public function save():void{
-        //AVANT d'écrire dans la base de données on vérifie que les données à sauvegarder sont cohérentes
-        //Si c'est cohérent, on update ou insert selon que ce soit un nouvel utilisateur ou pas
-        //sinon, on refuse d'ecrire dans la base
-
         if($this->id_upload!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE upload SET `id_uploader`=:id_uploader,`upload_time`=:upload_time, `title`=:title, `description`=:descript, `path`=:chemin, `media_type`=:media_type WHERE `id_upload`=:id_upload");

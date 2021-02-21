@@ -3,29 +3,41 @@
 require_once("./model/pdo.php");
 require_once("./model/databaseObject.interface.php");
 class User implements databaseObject{
-    // Déclarations publique des attributs qui définissent ce qu'est un User et qui correspondent à ses champs dans la bdd
-    const SALT = "%'@jygFUT1646`[|~{#";
+    const SALT = "%'@jygFUT1646`[|~{#";//Le sel qui sera utilisé pour le Hash de nos mots de passe
     public $id_user;
-    public $nickname;
-    public $email;
-    private $password;
-    public $birthday;
-    private $signed_up;
+    public $nickname;//Le pseudo du User
+    public $email;//Le courriel du User
+    private $password;//Le mot de passe du User
+    public $birthday;//La date de naissance du User
+    private $signed_up;//L'heure d'inscription du User, elle est private pour interdire sa modification car elle servira de poivre dans le hash de nos mots de passe
 
-    // Déclarations des méthodes de la classe User (les fonctions internes à la classe)
-
-    //La fonction loadById sert à récupérer un utilisateur dans la base de données et à le renvoyer sous la forme d'un objet User PHP, le mot clef static signifie que cette fonction se comportera de la même façon, que que soit le user qui l'appelle, il n'est donc pas possible d'utiliser $this dans cette fonction, mais celà permet en contrepartie d'appeler directement User::loadById() sans avoir créé un User avant.
+    /**
+     * Récupère un User dans la base de données en fonction de son id
+     * 
+     * @param int $id_user l'identifiant du User que l'on souhaite récupérer
+     * 
+     * @return User
+     */
     public static function loadById(int $id_user):User{
-        //On commence par préparer la base de données à recevoir une requete avec un marqueur qui lui indique quelle partie de la requete doit recevoir une variable
         $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM user WHERE id_user=:id_user");
-        //on execute la requete préparée précédement en lui donnant sous forme d'un array les valeurs qui doivent remplacer les marqueurs
-        $requete_preparee->execute([':id_user'=> $id_user]);
-        //On transforme la réponse de la BDD en un objet de la classe User et on le renvoit comme résultat de la fonction
-        return $requete_preparee->fetchObject("User");
-        //On pourra donc dans le controleur récupérer toutes les infos d'un utilisateur depuis la base de données en utilisant la fonction `$mon_utilisateur = User::loadById($id_user);`
+        //On commence par préparer la base de données à recevoir une requete avec un marqueur qui lui indique quelle partie de la requete doit recevoir une variable        
+        $requete_preparee->execute([':id_user'=> $id_user]);//on execute la requete préparée précédement en lui donnant sous forme d'un array les valeurs qui doivent remplacer les marqueurs
+        return $requete_preparee->fetchObject("User");//On transforme la réponse de la BDD en un objet de la classe User et on le renvoit comme résultat de la fonction        
     }
     
-    //La fonction create, nous servira de contructeur quand on veut créer un nouvel User hors de la base de données (pour inscrire un nouveau membre par exemple). On n'utilise pas directement __construct() car il interfere avec le fetchObject() que l'on utilise dans notre fonction loadById()
+    /**
+     * Crée un nouveau User tout en renseignant toutes ses infos
+     * 
+     * La date d'inscription est créée automatiquement par cette fonction
+     * Le mot de passe donné à cette fonction n'est pas encore hashé, c'est elle qui s'en charge après avoir généré la date d'inscription car celle-ci doit servir de poivre
+     * 
+     * @param string $nickname Le pseudo du User
+     * @param string $email L'adresse courriel du User
+     * @param string $password Le mot de passe pas encore hashé du user
+     * @param string $birthday La date de naissance du user
+     * 
+     * @return User Le user qui vient d'être créé
+     */
     public static function create(string $nickname = null, string $email = null, string $password = null, string $birthday = null){
         $newUser=new User();
         $newUser->id_user = null;
@@ -37,24 +49,50 @@ class User implements databaseObject{
         return $newUser;      
     }
 
+    /**
+     * Récupère la date d'inscription
+     * 
+     * Ce getter est necessaire, car la date d'inscription servant de poivre elle ne doit pas pouvoir être changée et est donc privée
+     * 
+     * @return string La date d'inscription
+     */
     public function getSignedUp():string{
         return $this->signedUp;
     }
 
-    //On met le mot de passe en privé, pour obliger à le hasher quand on le modifie
+    /**
+     * Change le mot de passe de ce user
+     * 
+     * Effectue le hash du mot de passe pendant la modification
+     * 
+     * @param $newPassword Nouveau mot de passe non-hashé
+     * @return string Nouveau mot de passe hashé 
+     *
+     */
     public function setPassword(string $newPassword):string{
         return $this->password = sha1(self::SALT.$newPassword.$this->signed_up);
     }
 
+    /**
+     * Récupère le mot de passe hashé de ce User
+     * 
+     * Ce getter est necessaire pour que le mot de passe puisse être private et que son hash soit effectué automatiquement lors de sa modification par la fonction setPassword
+     * 
+     * @return string Le mot de passe hashé
+     */
     public function getPassword():string{
         return $this->password;
     }
     
+    /**
+     * Enregistre en base de données ce User
+     * 
+     * Crée un nouveau User si $id_user est vide
+     * Modifie le User correspondant à $id_user dans la base de données si il n'est pas vide
+     * 
+     * @return void
+     */
     public function save():void{
-        //AVANT d'écrire dans la base de données on vérifie que les données à sauvegarder sont cohérentes
-        //Si c'est cohérent, on update ou insert selon que ce soit un nouvel utilisateur ou pas
-        //sinon, on refuse d'ecrire dans la base
-
         if($this->id_user!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE user SET `nickname`=:nickname, `email`=:email, `password`=:pwd, `birthday`=:birthday WHERE `id_user`=:id_user");

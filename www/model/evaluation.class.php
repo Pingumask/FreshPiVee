@@ -4,24 +4,33 @@ require_once("./model/databaseObject.interface.php");
 require_once("./model/user.class.php");
 require_once("./model/upload.class.php");
 
-class Evaluation{
-    public $id_evaluation;
-    public $id_user;
-    public $id_upload;
-    public $evaluation_type;
-    public $evaluation_time;
+class Evaluation implements databaseObject{
+    public int $id_evaluation;
+    public int $id_user;//L'id du User qui a fait l'évaluation
+    public int $id_upload;//L'id de l'Upload qui est évalué
+    public string $evaluation_type;//Le type d'évaluation ("like","dislike","favorite")
+    public string $evaluation_time;//L'heure de création de l'évaluation
 
-    private $user;
-    private $upload;
+    private $user;//Les informations completes de l'utilisateur qui a créé l'évaluation
+    private $upload;//Les informations completes de l'upload qui est évalué
     
-    // Déclarations des méthodes(les fonctions)
-    
+    /**
+     * Récupère dans la base de données l'évaluation correspondant à l'id demandé
+     * 
+     * @param int $id_evaluation L'id de l'objet à aller chercher dans la base de données 
+     * @return Evaluation
+     */
     public static function loadById($id_evaluation):Evaluation{
         $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM evaluation WHERE id_evaluation=:id_evaluation");
         $requete_preparee->execute([':id_evaluation'=> $id_evaluation]);
         return $requete_preparee->fetchObject("Evaluation");
     }
     
+    /**
+     * Récupère les informations completes sur le User qui a fait cette évaluation
+     * 
+     * @return User
+     */
     public function getUser():User{
         if($this->user!=null){
             return $this->user;
@@ -36,6 +45,11 @@ class Evaluation{
         }
     }
 
+    /**
+     * Récupère les informations complètes sur l'Upload qui est évalué
+     * 
+     * @return Upload
+     */
     public function getUpload():Upload{
         if($this->upload!=null){
             return $this->upload;
@@ -49,6 +63,16 @@ class Evaluation{
         }
     }
 
+    /**
+     * Crée une nouvelle évaluation tout en remplissant ses informations
+     * 
+     * @param int $id_user l'id du User qui effectue l'évaluation
+     * @param int $id_upload l'id de l'Upload qui est évalué
+     * @param string $evaluation_type le type d'évaluation (like, dislike, favorite)
+     * @param string $evaluation_time L'heure de création de l'évaluation
+     * 
+     * @return Evaluation
+     */
     public static function create(int $id_user = null, int $id_upload = null, string $evaluation_type = null, string $evaluation_time = null):Evaluation{
         $newEvaluation = new Evaluation();
         $newEvaluation->id_evaluation = null;
@@ -59,6 +83,14 @@ class Evaluation{
         return $newEvaluation;
     }
 
+    /**
+     * Enregistre en base de données cette Evaluation
+     * 
+     * Crée une nouvelle Evaluation si $id_evaluation est null
+     * Met à jour l'Evaluation correspondante si $id_evaluation n'est pas null
+     * 
+     * @return void
+     */
     public function save():void{
         if($this->id_evaluation!=null){
             //faire un UPDATE dans la base de données
