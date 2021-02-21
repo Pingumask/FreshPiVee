@@ -9,7 +9,7 @@ class Evaluation implements databaseObject{
     public int $id_user;//L'id du User qui a fait l'évaluation
     public int $id_upload;//L'id de l'Upload qui est évalué
     public string $evaluation_type;//Le type d'évaluation ("like","dislike","favorite")
-    public string $evaluation_time;//L'heure de création de l'évaluation
+    private string $evaluation_time;//L'heure de création de l'évaluation
 
     private ?User $user=null;//Les informations completes de l'utilisateur qui a créé l'évaluation
     private ?Upload $upload=null;//Les informations completes de l'upload qui est évalué
@@ -64,6 +64,13 @@ class Evaluation implements databaseObject{
     }
 
     /**
+     * Récupère l'heure à laquelle l'évaluation a été effectuée
+     */
+    public function getEvaluationTime():string{
+        return $this->evaluation_time;
+    }
+
+    /**
      * Crée une nouvelle évaluation tout en remplissant ses informations
      * 
      * @param int $id_user l'id du User qui effectue l'évaluation
@@ -73,12 +80,12 @@ class Evaluation implements databaseObject{
      * 
      * @return Evaluation
      */
-    public static function create(int $id_user, int $id_upload, string $evaluation_type, string $evaluation_time):Evaluation{
+    public static function create(int $id_user, int $id_upload, string $evaluation_type):Evaluation{
         $newEvaluation = new Evaluation();
         $newEvaluation->id_user = $id_user;
         $newEvaluation->id_upload = $id_upload;
         $newEvaluation->evaluation_type = $evaluation_type;
-		$newEvaluation->evaluation_time = $evaluation_time;
+		$newEvaluation->evaluation_time = date("Y-m-d H:i:s"); 
         return $newEvaluation;
     }
 
@@ -93,13 +100,12 @@ class Evaluation implements databaseObject{
     public function save():void{
         if($this->id_evaluation!=null){
             //faire un UPDATE dans la base de données
-            $requete_preparee=$GLOBALS['database']->prepare("UPDATE evaluation SET `id_user`=:id_user, `id_upload`=:id_upload, `evaluation_type`=:evaluation_type, `evaluation_time`=:evaluation_time WHERE `id_evaluation`=:id_evaluation");
+            $requete_preparee=$GLOBALS['database']->prepare("UPDATE evaluation SET `id_user`=:id_user, `id_upload`=:id_upload, `evaluation_type`=:evaluation_type, WHERE `id_evaluation`=:id_evaluation");
             $requete_preparee->execute([
                 ":id_user"=>$this->id_user, 
                 ":id_upload"=>$this->id_upload,
                 ":id_evaluation"=>$this->id_evaluation,
-                ":evaluation_type"=>$this->evaluation_type, 
-                ":evaluation_time"=>$this->evaluation_time
+                ":evaluation_type"=>$this->evaluation_type
             ]);
         }
         else{

@@ -8,7 +8,7 @@ class Comment implements databaseObject{
     public ?int $id_comment=null;
 	public int $id_user;//L'id du User qui a laissé ce commentaire
 	public int $id_upload;//L'id de l'Upload qui a reçu ce commentaire
-	public string $comment_time;//Le Datetime auquel ce commentaire a été fait
+	private string $comment_time;//Le Datetime auquel ce commentaire a été fait
     public string $comment_content;//Le texte contenu dans ce commentaire
 
 	private ?User $user=null;//La version complete sous forme d'un objet de la classe User de l'utilisateur qui a laissé ce commentaire
@@ -39,11 +39,11 @@ class Comment implements databaseObject{
      * 
      * @return Comment
      */
-	public static function create(int $id_user, int $id_upload, string $comment_time, string $comment_content):Comment{
+	public static function create(int $id_user, int $id_upload, string $comment_content):Comment{
         $newComment = new Comment();
         $newComment->id_user = $id_user;
         $newComment->id_upload = $id_upload;
-        $newComment->comment_time = $comment_time;
+        $newComment->comment_time = date("Y-m-d H:i:s"); 
         $newComment->comment_content = $comment_content;
         return $newComment;
     }
@@ -85,6 +85,13 @@ class Comment implements databaseObject{
 	}
 
     /**
+     * Récupère l'heure à laquelle le commentaire a été effectué
+     */
+    public function getCommentTime():string{
+        return $this->comment_time;
+    }
+
+    /**
      * Enregistre en base de données ce Comment
      * 
      * Crée un nouveau commentaire si $id_comment est null
@@ -95,12 +102,11 @@ class Comment implements databaseObject{
     public function save():void{
         if($this->id_comment!=null){
             //faire un UPDATE dans la base de données
-            $requete_preparee=$GLOBALS['database']->prepare("UPDATE comment SET `id_user`=:id_user,`id_upload`=:id_upload, `comment_time`=:comment_time, `comment_content`=:comment_content WHERE `id_comment`=:id_comment");
+            $requete_preparee=$GLOBALS['database']->prepare("UPDATE comment SET `id_user`=:id_user,`id_upload`=:id_upload, `comment_content`=:comment_content WHERE `id_comment`=:id_comment");
             $requete_preparee->execute([
                 ":id_comment"=>$this->id_comment,
                 ":id_user"=>$this->id_user,
                 ":id_upload"=>$this->id_upload,
-                ":comment_time"=>$this->comment_time,
                 ":comment_content"=>$this->comment_content 
             ]);
         }

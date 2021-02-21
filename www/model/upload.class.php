@@ -45,7 +45,7 @@ class Upload implements databaseObject{
     public static function create($id_uploader,$title, $description,$path,$media_type):Upload{
         $newUpload = new Upload();
         $newUpload->id_uploader = $id_uploader;
-        $newUpload->upload_time= date("Y-m-d H:i:s");  
+        $newUpload->upload_time = date("Y-m-d H:i:s");  
         $newUpload->title = $title;
         $newUpload->description= $description;
         $newUpload->path= $path;
@@ -91,11 +91,10 @@ class Upload implements databaseObject{
     public function save():void{
         if($this->id_upload!=null){
             //faire un UPDATE dans la base de données
-            $requete_preparee=$GLOBALS['database']->prepare("UPDATE upload SET `id_uploader`=:id_uploader,`upload_time`=:upload_time, `title`=:title, `description`=:descript, `path`=:chemin, `media_type`=:media_type WHERE `id_upload`=:id_upload");
+            $requete_preparee=$GLOBALS['database']->prepare("UPDATE upload SET `id_uploader`=:id_uploader, `title`=:title, `description`=:descript, `path`=:chemin, `media_type`=:media_type WHERE `id_upload`=:id_upload");
             $requete_preparee->execute([
                 ":id_upload"=>$this->id_upload,
                 ":id_uploader"=>$this->id_uploader,
-                ":upload_time"=>$this->upload_time, 
                 ":title"=>$this->title, 
                 ":descript"=>$this->description, 
                 ":chemin"=>$this->path,
