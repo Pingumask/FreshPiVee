@@ -1,5 +1,6 @@
 <?php
 require_once('./model/pdo.php');
+require_once("./model/databaseObject.interface.php");
 require_once('./model/user.class.php');
 
 class Upload{
@@ -25,15 +26,16 @@ class Upload{
     }
     
     //Chargement des informations dans un objet de la classe Upload en dehors de la base de données
-    public function init($id_upload,$id_uploader,$upload_time,$title, $description,$path,$media_type):Upload{
-        $this->id_upload = $id_upload;
-        $this->id_uploader = $id_uploader;
-        $this->upload_time= $upload_time;
-        $this->title = $title;
-        $this->description= $description;
-        $this->path= $path;
-        $this->media_type= $media_type;
-        return $this;
+    public static function create($id_uploader,$upload_time,$title, $description,$path,$media_type):Upload{
+        $newUpload = new Upload();
+        $newUpload->id_upload = null;
+        $newUpload->id_uploader = $id_uploader;
+        $newUpload->upload_time= $upload_time;
+        $newUpload->title = $title;
+        $newUpload->description= $description;
+        $newUpload->path= $path;
+        $newUpload->media_type= $media_type;
+        return $newUpload;
     }
 
     //Récupération des informations complètes du User qui a réalisé l'upload (voir la methode getFollower() de la classe Follow qui est très similaire pour plus de détails)
@@ -50,7 +52,7 @@ class Upload{
         }
     }
 
-    public function save(){
+    public function save():void{
         //AVANT d'écrire dans la base de données on vérifie que les données à sauvegarder sont cohérentes
         //Si c'est cohérent, on update ou insert selon que ce soit un nouvel utilisateur ou pas
         //sinon, on refuse d'ecrire dans la base
@@ -71,7 +73,7 @@ class Upload{
         else{
             //faire un INSERT dans la BDD
             $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO upload (`id_uploader`,`upload_time`, `title`, `description`, `path`, `media_type`) VALUES(:id_uploader,:upload_time, :title, :descript, :chemin, :media_type)");
-            $requete_preparee->execute([
+            $reussite=$requete_preparee->execute([
                 ":id_uploader"=>$this->id_uploader,
                 ":upload_time"=>$this->upload_time,
                 ":title"=>$this->title, 
@@ -79,6 +81,9 @@ class Upload{
                 ":chemin"=>$this->path, 
                 ":media_type"=>$this->media_type
             ]);
+            if($reussite===true){
+                $this->id_upload=$GLOBALS['database']->lastInsertId();
+            }
         }
     }
 }

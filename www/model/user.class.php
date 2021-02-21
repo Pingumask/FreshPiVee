@@ -1,7 +1,8 @@
 <?php
 //On importe notre PDO pour avoir une connexion à la base de données
 require_once("./model/pdo.php");
-class User {
+require_once("./model/databaseObject.interface.php");
+class User implements databaseObject{
     // Déclarations publique des attributs qui définissent ce qu'est un User et qui correspondent à ses champs dans la bdd
     const SALT = "%'@jygFUT1646`[|~{#";
     public $id_user;
@@ -24,17 +25,16 @@ class User {
         //On pourra donc dans le controleur récupérer toutes les infos d'un utilisateur depuis la base de données en utilisant la fonction `$mon_utilisateur = User::loadById($id_user);`
     }
     
-    //La fonction init, nous servira de contructeur quand on veut créer un nouvel User hors de la base de données (pour inscrire un nouveau membre par exemple). On n'utilise pas directement __construct() car il interfere avec le fetchObject() que l'on utilise dans notre fonction loadById()
-    public function init(int $id_user = null, string $nickname = null, string $email = null, string $password = null, string $birthday = null):User{
-        $this->id_user = $id_user;
-        $this->nickname = $nickname;
-        $this->email = $email;
-        $this->setPassword($password);
-        $this->birthday = $birthday;
-        if($this->id_user==null){
-            $this->signed_up = date("Y-m-d H:i:s");
-        }        
-        return $this;
+    //La fonction create, nous servira de contructeur quand on veut créer un nouvel User hors de la base de données (pour inscrire un nouveau membre par exemple). On n'utilise pas directement __construct() car il interfere avec le fetchObject() que l'on utilise dans notre fonction loadById()
+    public static function create(string $nickname = null, string $email = null, string $password = null, string $birthday = null){
+        $newUser=new User();
+        $newUser->id_user = null;
+        $newUser->nickname = $nickname;
+        $newUser->email = $email;        
+        $newUser->birthday = $birthday;
+        $newUser->signed_up = date("Y-m-d H:i:s");        
+        $newUser->setPassword($password);
+        return $newUser;      
     }
 
     public function getSignedUp():string{
@@ -50,33 +50,103 @@ class User {
         return $this->password;
     }
     
-    public function save(){
+    public function save():void{
         //AVANT d'écrire dans la base de données on vérifie que les données à sauvegarder sont cohérentes
         //Si c'est cohérent, on update ou insert selon que ce soit un nouvel utilisateur ou pas
         //sinon, on refuse d'ecrire dans la base
 
         if($this->id_user!=null){
             //faire un UPDATE dans la base de données
-            $requete_preparee=$GLOBALS['database']->prepare("UPDATE user SET `nickname`=:nickname, `email`=:email, `password`=:pwd, `birthday`=:birthday, `signed_up`=:signed_up WHERE `id_user`=:id_user");
+            $requete_preparee=$GLOBALS['database']->prepare("UPDATE user SET `nickname`=:nickname, `email`=:email, `password`=:pwd, `birthday`=:birthday WHERE `id_user`=:id_user");
             $requete_preparee->execute([
                 ":id_user"=>$this->id_user,
                 ":nickname"=>$this->nickname,
                 ":email"=>$this->email, 
                 ":pwd"=>$this->password, 
-                ":birthday"=>$this->birthday, 
-                ":signed_up"=>$this->signed_up
-            ]);
+                ":birthday"=>$this->birthday
+            ]);            
         }
         else{
             //faire un INSERT dans la BDD
             $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO user (`nickname`, `email`, `password`, `birthday`, `signed_up`) VALUES(:nickname, :email, :pwd, :birthday, :signed_up)");
-            $requete_preparee->execute([
+            $reussite=$requete_preparee->execute([
                 ":nickname"=>$this->nickname,
                 ":email"=>$this->email, 
                 ":pwd"=>$this->password, 
                 ":birthday"=>$this->birthday, 
                 ":signed_up"=>$this->signed_up
             ]);
+            if($reussite===true){
+                $this->id_user=$GLOBALS['database']->lastInsertId();
+            }
         }
+    }
+
+    public function createValidUser(string $nickname, string $email, string $password, string $confirmPassword, string $birthday){
+        $errors=array();
+        if(!preg_match("/[\w]{8,}/",$nickname)){
+            $errors[]="Nickname must be at least 8 characters long.";
+        }
+        if(!preg_match("/.{8,}/",$password)){
+            $errors[]="Password must be at least 8 characters long.";
+        }
+        if(!preg_match("/[a-z]/",$password)){
+            $errors[]="Password must contain a lowercase character.";
+        }
+        if(!preg_match("/[A-Z]/",$password)){
+            $errors[]="Password must contain an Uppercase character.";
+        }
+        if(!preg_match("/[0-9]/",$password)){
+            $errors[]="Password must contain a number.";
+        }
+        if(!preg_match("/\W/",$password)){
+            $errors[]="Password must contain a special character.";
+        }
+        if($password!=$confirmPassword){
+            $errors[]="Passwords must match.";
+        }
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){ 
+            $errors[]="Wrong email.";
+        }        
+        if(!preg_match("/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/",$birthday)){
+            $errors[]="Wrong date format for birthday";
+        }
+        if(count($errors)){
+            return $errors;
+        }
+        return $this->create($nickname, $email, $password, $birthday);
+    }
+
+
+    /**
+     * @return Array La liste des données non conformes du User
+     */
+    public function checkData():Array{
+        $errors=array();
+        if(!preg_match("/[\w]{8,}/",$this->nickname)){
+            $errors[]="Nickname must be at least 8 characters long.";
+        }
+        if(!preg_match("/.{8,}/",$this->password)){
+            $errors[]="Password must be at least 8 characters long.";
+        }
+        if(!preg_match("/[a-z]/",$this->password)){
+            $errors[]="Password must contain a lowercase character.";
+        }
+        if(!preg_match("/[A-Z]/",$this->password)){
+            $errors[]="Password must contain an Uppercase character.";
+        }
+        if(!preg_match("/[0-9]/",$this->password)){
+            $errors[]="Password must contain a number.";
+        }
+        if(!preg_match("/\W/",$this->password)){
+            $errors[]="Password must contain a special character.";
+        }
+        if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){ 
+            $errors[]="Wrong email.";
+        }        
+        if(!preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/",$this->birthday)){
+            $errors[]="Wrong date format for birthday";
+        }
+        return $errors;
     }
 }

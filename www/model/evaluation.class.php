@@ -1,5 +1,6 @@
 <?php
 require_once("./model/pdo.php");
+require_once("./model/databaseObject.interface.php");
 require_once("./model/user.class.php");
 require_once("./model/upload.class.php");
 
@@ -48,16 +49,17 @@ class Evaluation{
         }
     }
 
-    public function init(int $id_evaluation = null, int $id_user = null, int $id_upload = null, string $evaluation_type = null, string $evaluation_time = null):Evaluation{
-        $this->id_evaluation = $id_evaluation;
-        $this->id_user = $id_user;
-        $this->id_upload = $id_upload;
-        $this->evaluation_type = $evaluation_type;
-		$this->evaluation_time = $evaluation_time;
-        return $this;
+    public static function create(int $id_user = null, int $id_upload = null, string $evaluation_type = null, string $evaluation_time = null):Evaluation{
+        $newEvaluation = new Evaluation();
+        $newEvaluation->id_evaluation = null;
+        $newEvaluation->id_user = $id_user;
+        $newEvaluation->id_upload = $id_upload;
+        $newEvaluation->evaluation_type = $evaluation_type;
+		$newEvaluation->evaluation_time = $evaluation_time;
+        return $newEvaluation;
     }
 
-    public function save(){
+    public function save():void{
         if($this->id_evaluation!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE evaluation SET `id_user`=:id_user, `id_upload`=:id_upload, `evaluation_type`=:evaluation_type, `evaluation_time`=:evaluation_time WHERE `id_evaluation`=:id_evaluation");
@@ -72,12 +74,15 @@ class Evaluation{
         else{
             //faire un INSERT dans la BDD
             $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO evaluation (`id_user`, `id_upload`, `evaluation_type`, `evaluation_time`) VALUES(:id_user, :id_upload, :evaluation_type, :evaluation_time)");
-            $requete_preparee->execute([
+            $reussite=$requete_preparee->execute([
                 ":id_user"=>$this->id_user, 
                 ":id_upload"=>$this->id_upload, 
                 ":evaluation_type"=>$this->evaluation_type, 
                 ":evaluation_time"=>$this->evaluation_time
             ]);
+            if($reussite===true){
+                $this->id_evaluation=$GLOBALS['database']->lastInsertId();
+            }
         }
     }
 }

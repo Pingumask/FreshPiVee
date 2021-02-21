@@ -1,5 +1,6 @@
 <?php
 require_once("./model/pdo.php");
+require_once("./model/databaseObject.interface.php");
 //La classe follow a besoin de savoir ce qu'est un User pour fonctionner car notre follower et notre followed sont des objets de cette classe.
 require_once("./model/user.class.php");
 class Follow {
@@ -25,11 +26,12 @@ class Follow {
     }
     
     //Voir le commentaire de la fonction similaire dans la classe User pour plus de détails, leur fonctionnement est le même
-    public function init(int $id_follow=null, int $id_follower = null, int $id_followed=null):Follow{
-        $this->id_follow = $id_follow;
-        $this->id_follower = $id_follower;
-        $this->id_followed = $id_followed;
-        return $this;
+    public static function create(int $id_follower = null, int $id_followed=null):Follow{
+        $newFollow = new Follow();
+        $newFollow->id_follow = null;
+        $newFollow->id_follower = $id_follower;
+        $newFollow->id_followed = $id_followed;
+        return $newFollow;
     }
 
     //On crée un "getter" pour récupérer la version complète du follower si on en a besoin
@@ -60,7 +62,7 @@ class Follow {
         }
     }
 
-    public function save(){
+    public function save():void{
 
         if($this->id_follow!=null){
             //faire un UPDATE dans la base de données
@@ -74,10 +76,13 @@ class Follow {
         else{
             //faire un INSERT dans la BDD
             $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO follow (`id_follower`, `id_followed`) VALUES(:id_follower, :id_followed)");
-            $requete_preparee->execute([ 
+            $reussite=$requete_preparee->execute([ 
                 ":id_follower"=>$this->id_follower, 
                 ":id_followed"=>$this->id_followed, 
             ]);
+            if($reussite===true){
+                $this->id_follow=$GLOBALS['database']->lastInsertId();
+            }
         }
     }
 }

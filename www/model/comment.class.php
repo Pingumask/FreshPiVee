@@ -1,5 +1,6 @@
 <?php
 require_once("./model/pdo.php");
+require_once("./model/databaseObject.interface.php");
 require_once("./model/user.class.php");
 require_once("./model/upload.class.php");
 
@@ -23,13 +24,14 @@ class Comment{
         return $requete_preparee->fetchObject("Comment");
     }
 
-	public function init(int $id_comment = null, int $id_user = null, int $id_upload = null, string $comment_time = null, string $comment_content = null):Comment{
-        $this->id_comment = $id_comment;
-        $this->id_user = $id_user;
-        $this->id_upload = $id_upload;
-        $this->comment_time = $comment_time;
-        $this->comment_content = $comment_content;
-        return $this;
+	public static function create(int $id_user = null, int $id_upload = null, string $comment_time = null, string $comment_content = null):Comment{
+        $newComment = new Comment();
+        $newComment->id_comment = null;
+        $newComment->id_user = $id_user;
+        $newComment->id_upload = $id_upload;
+        $newComment->comment_time = $comment_time;
+        $newComment->comment_content = $comment_content;
+        return $newComment;
     }
 
     public function getUser():User{
@@ -59,7 +61,7 @@ class Comment{
 
 	}
 
-    public function save(){
+    public function save():void{
         //AVANT d'écrire dans la base de données on vérifie que les données à sauvegarder sont cohérentes
         //Si c'est cohérent, on update ou insert selon que ce soit un nouvel utilisateur ou pas
         //sinon, on refuse d'ecrire dans la base
@@ -78,12 +80,15 @@ class Comment{
         else{
             //faire un INSERT dans la BDD
             $requete_preparee=$GLOBALS['database']->prepare("INSERT INTO comment (`id_user`,`id_upload`,`comment_time`, `comment_content`) VALUES(:id_user, :id_upload,:comment_time, :comment_content)");
-            $requete_preparee->execute([
+            $reussite=$requete_preparee->execute([
                 ":id_user"=>$this->id_user,
                 ":id_upload"=>$this->id_upload,
                 ":comment_time"=>$this->comment_time,
                 ":comment_content"=>$this->comment_content
             ]);
+            if($reussite===true){
+                $this->id_comment=$GLOBALS['database']->lastInsertId();
+            }
         }
     }
 }
