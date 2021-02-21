@@ -5,14 +5,14 @@ require_once("./model/user.class.php");
 require_once("./model/upload.class.php");
 
 class Evaluation implements databaseObject{
-    public int $id_evaluation;
+    public ?int $id_evaluation=null;
     public int $id_user;//L'id du User qui a fait l'évaluation
     public int $id_upload;//L'id de l'Upload qui est évalué
     public string $evaluation_type;//Le type d'évaluation ("like","dislike","favorite")
     public string $evaluation_time;//L'heure de création de l'évaluation
 
-    private $user;//Les informations completes de l'utilisateur qui a créé l'évaluation
-    private $upload;//Les informations completes de l'upload qui est évalué
+    private ?User $user=null;//Les informations completes de l'utilisateur qui a créé l'évaluation
+    private ?Upload $upload=null;//Les informations completes de l'upload qui est évalué
     
     /**
      * Récupère dans la base de données l'évaluation correspondant à l'id demandé
@@ -73,9 +73,8 @@ class Evaluation implements databaseObject{
      * 
      * @return Evaluation
      */
-    public static function create(int $id_user = null, int $id_upload = null, string $evaluation_type = null, string $evaluation_time = null):Evaluation{
+    public static function create(int $id_user, int $id_upload, string $evaluation_type, string $evaluation_time):Evaluation{
         $newEvaluation = new Evaluation();
-        $newEvaluation->id_evaluation = null;
         $newEvaluation->id_user = $id_user;
         $newEvaluation->id_upload = $id_upload;
         $newEvaluation->evaluation_type = $evaluation_type;

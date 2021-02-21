@@ -5,14 +5,14 @@ require_once("./model/user.class.php");
 require_once("./model/upload.class.php");
 
 class Comment implements databaseObject{
-    public $id_comment;
-	public $id_user;//L'id du User qui a laissé ce commentaire
-	public $id_upload;//L'id de l'Upload qui a reçu ce commentaire
-	public $comment_time;//Le Datetime auquel ce commentaire a été fait
-    public $comment_content;//Le texte contenu dans ce commentaire
+    public ?int $id_comment=null;
+	public int $id_user;//L'id du User qui a laissé ce commentaire
+	public int $id_upload;//L'id de l'Upload qui a reçu ce commentaire
+	public string $comment_time;//Le Datetime auquel ce commentaire a été fait
+    public string $comment_content;//Le texte contenu dans ce commentaire
 
-	private $user;//La version complete sous forme d'un objet de la classe User de l'utilisateur qui a laissé ce commentaire
-	private $upload;//La version complete sous forme d'un objet de la classe Upload de l'element qui a été commenté
+	private ?User $user=null;//La version complete sous forme d'un objet de la classe User de l'utilisateur qui a laissé ce commentaire
+	private ?Upload $upload=null;//La version complete sous forme d'un objet de la classe Upload de l'element qui a été commenté
 
     /**
      * Récupère dans la base de données le commentaire correspondant à l'id demandé
@@ -39,9 +39,8 @@ class Comment implements databaseObject{
      * 
      * @return Comment
      */
-	public static function create(int $id_user = null, int $id_upload = null, string $comment_time = null, string $comment_content = null):Comment{
+	public static function create(int $id_user, int $id_upload, string $comment_time, string $comment_content):Comment{
         $newComment = new Comment();
-        $newComment->id_comment = null;
         $newComment->id_user = $id_user;
         $newComment->id_upload = $id_upload;
         $newComment->comment_time = $comment_time;
