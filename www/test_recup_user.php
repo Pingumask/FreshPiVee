@@ -1,4 +1,4 @@
 <?php
 require_once('./model/user.class.php');
-$user = User::loadById(2);
+$user = User::loadById($_GET['user']);
 var_dump($user);
