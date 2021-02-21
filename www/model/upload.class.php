@@ -6,7 +6,7 @@ require_once('./model/user.class.php');
 class Upload implements databaseObject{
     public ?int $id_upload=null;
     public int $id_uploader;//L'id du User qui a effectué cet upload
-    public string $upload_time;//L'heure à laquelle cet upload a été effectué
+    private string $upload_time;//L'heure à laquelle cet upload a été effectué
     public string $title;//Le titre de cet upload
     public string $description;//La description de cet upload
     public string $path;//Le chemin sur le disque dur vers cet upload
@@ -42,10 +42,10 @@ class Upload implements databaseObject{
      * 
      * @return Upload
      */
-    public static function create($id_uploader,$upload_time,$title, $description,$path,$media_type):Upload{
+    public static function create($id_uploader,$title, $description,$path,$media_type):Upload{
         $newUpload = new Upload();
         $newUpload->id_uploader = $id_uploader;
-        $newUpload->upload_time= $upload_time;
+        $newUpload->upload_time= date("Y-m-d H:i:s");  
         $newUpload->title = $title;
         $newUpload->description= $description;
         $newUpload->path= $path;
@@ -69,6 +69,15 @@ class Upload implements databaseObject{
         else{
             return new User();
         }
+    }
+
+    /**
+     * Récupère la date d'upload qui est privée pour la renvoyer publiquement
+     * 
+     * @return string La date de création de l'upload
+     */
+    public function getUploadTime(){
+        return $this->upload_time;
     }
 
     /**

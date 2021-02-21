@@ -2,7 +2,7 @@
 require_once("./model/upload.class.php");
 
 $newUpload= new Upload();
-$newUpload=Upload::create(1, "2021-02-18 10:29:52", "Hello", "azerty", "hello.mp4", "video");
+$newUpload=Upload::create(1, "Hello", "azerty", "hello.mp4", "video");
 var_dump($newUpload);
 $newUpload->save();
 
