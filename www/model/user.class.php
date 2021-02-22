@@ -189,11 +189,11 @@ class User implements databaseObject{
     public static function loadByEmailAndPassword(string $email, string $password):User{
         $requete_preparee = $GLOBALS['database']->prepare(
             "SELECT * FROM user 
-            WHERE `email`=:email 
-            `password`= SHA1(CONCAT(self::SALT,:pwd,`signed_up`))
+            WHERE `email`=:email AND
+            `password`= SHA1(CONCAT(:salt,:pwd,`signed_up`))
             LIMIT 1"
         );
-        $reussite = $requete_preparee->execute([':email'=> $email,':pwd'=>$password]);
+        $reussite = $requete_preparee->execute([':salt'=>self::SALT,':email'=> $email,':pwd'=>$password]);
         if($reussite){
             return $requete_preparee->fetchObject("User");   
         }
