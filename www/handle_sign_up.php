@@ -1,6 +1,5 @@
 <?php
-session_start();
-require_once("./model/user.class.php");
+require_once("./model/session.php");
 
 if((!isset($_POST['nickname']) || !isset($_POST['email']) || !isset($_POST['password']) || !isset($_POST['confirmPassword']) || !isset($_POST['birthday']))){
     $_SESSION['errors']=["Wrong data sent."];

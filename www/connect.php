@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once("./model/session.php");
 if(isset($_SESSION['user'])){
     header('location:./');
     exit();

@@ -1,8 +1,10 @@
 <?php
-require_once('./model/user.class.php');
+require_once("./model/session.php");
 
-$currentPage="member";
-
-$member = User::loadById(1);
-
-require_once("./view/template.php");
+if(isset($_SESSION['user'])){
+    $currentPage="member";
+    require_once("./view/template.php");
+}
+else{
+    header('location:./connect.php');
+}

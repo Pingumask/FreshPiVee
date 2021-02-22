@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once("./model/session.php");
 
 //Récupérer les informations du formulaire connect.php
 if(isset($_POST['email'])) // 1;DROP DATABASE;--
