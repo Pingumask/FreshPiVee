@@ -1,7 +1,7 @@
 <?php
 require_once("./model/user.class.php");
 
-$user= User::loadById(5);
+$user= User::loadById($_GET['id']);
 $user->setPassword("zozo");
 $user->save();
 

@@ -1,7 +1,7 @@
 <?php
 require_once("./model/comment.class.php");
 
-$comment= Comment::loadById(1);
+$comment= Comment::loadById($_GET['id']);
 $comment->comment_content="la vie est belle";
 $comment->save();
 

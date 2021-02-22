@@ -1,7 +1,7 @@
 <?php
 require_once('./model/evaluation.class.php');
 
-$eval = Evaluation::loadById(1);
+$eval = Evaluation::loadById($_GET['id']);
 $eval->evaluation_type="like";
 $eval->save();
 

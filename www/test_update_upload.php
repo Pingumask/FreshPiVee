@@ -1,7 +1,7 @@
 <?php
 require_once("./model/upload.class.php");
 
-$upload= Upload::loadById(1);
+$upload= Upload::loadById($_GET['id']);
 $upload->path="toto.png";
 $upload->save();
 
