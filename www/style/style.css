@@ -95,6 +95,14 @@ main input[type=submit]:hover, main button:hover{
     border-radius:0 5px 5px 0;
 }
 
+#viewer{
+    max-width:80%;
+}
+
+[page=picture], [page=video]{
+    display:grid;
+}
+
 @media(orientation:landscape){
 
     body{
