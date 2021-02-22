@@ -120,4 +120,18 @@ class Upload implements databaseObject{
             }
         }
     }
+
+    /**
+     * TODO
+     */
+    public function getCommentList():array{
+        return [];
+    }
+
+    /**
+     * TODO
+     */
+    public function getLikePercentage():int{
+        return 50;
+    }
 }
