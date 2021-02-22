@@ -43,7 +43,7 @@ class User implements databaseObject{
         $newUser->nickname = $nickname;
         $newUser->email = $email;        
         $newUser->birthday = $birthday;
-        $newUser->signed_up = date("Y-m-d H:i:s");        
+        $newUser->signed_up = date("Y-m-d H:i:s");
         $newUser->setPassword($password);
         return $newUser;      
     }
@@ -64,7 +64,7 @@ class User implements databaseObject{
      * 
      * Effectue le hash du mot de passe pendant la modification
      * 
-     * @param $newPassword Nouveau mot de passe non-hashé
+     * @param string $newPassword Nouveau mot de passe non-hashé
      * @return string Nouveau mot de passe hashé 
      *
      */
@@ -119,6 +119,27 @@ class User implements databaseObject{
         }
     }
 
+    /**
+     * Crée un User tout en vérifiant que les données envoyées soient valides
+     * 
+     * Vérifie que le pseudo fasse minimum 8 caracteres
+     * Vérifie que le mot de passe fasse minimum 8 caraacteres
+     * Vérifie que le mot de passe contient une lettre minuscule
+     * Vérifie que le mot de passe contient une lettre majuscule
+     * Vérifie que le mot de passe contient un chiffre
+     * Vérifie que le mot de passe contient un caractere special
+     * Vérifie que les deux mots de passe soient identiques
+     * Vérifie que l'adresse mail est valide
+     * Vérifie que la date de naissance est au format yyyy-mm-dd
+     * 
+     * @param string $nickname Le pseudo
+     * @param string $email l'email
+     * @param string $password le mot de passe non hashé
+     * @param string $confirmPassword la confirmation du mot de passe
+     * @param string $birthday la date de naissance
+     * 
+     * @return User Le user qui vient d'être créé (sans id)
+     */
     public function createValidUser(string $nickname, string $email, string $password, string $confirmPassword, string $birthday){
         $errors=array();
         if(!preg_match("/[\w]{8,}/",$nickname)){
