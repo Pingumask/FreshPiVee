@@ -138,7 +138,7 @@ class User implements databaseObject{
      * @param string $confirmPassword la confirmation du mot de passe
      * @param string $birthday la date de naissance
      * 
-     * @return User Le user qui vient d'être créé (sans id)
+     * @return mixed Le user qui vient d'être créé (sans id) ou un array qui liste les erreurs rencontrées
      */
     public function createValidUser(string $nickname, string $email, string $password, string $confirmPassword, string $birthday){
         $errors=array();
