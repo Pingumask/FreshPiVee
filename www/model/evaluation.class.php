@@ -6,8 +6,8 @@ require_once("./model/upload.class.php");
 
 class Evaluation implements databaseObject{
     public ?int $id_evaluation=null;
-    public int $id_user;//L'id du User qui a fait l'évaluation
-    public int $id_upload;//L'id de l'Upload qui est évalué
+    public ?int $id_user=null;//L'id du User qui a fait l'évaluation
+    public ?int $id_upload=null;//L'id de l'Upload qui est évalué
     public string $evaluation_type;//Le type d'évaluation ("like","dislike","favorite")
     private string $evaluation_time;//L'heure de création de l'évaluation
 
@@ -20,10 +20,13 @@ class Evaluation implements databaseObject{
      * @param int $id_evaluation L'id de l'objet à aller chercher dans la base de données 
      * @return Evaluation
      */
-    public static function loadById($id_evaluation):Evaluation{
+    public static function loadById( int $id_evaluation):Evaluation{
         $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM evaluation WHERE id_evaluation=:id_evaluation");
         $requete_preparee->execute([':id_evaluation'=> $id_evaluation]);
-        return $requete_preparee->fetchObject("Evaluation");
+        if($evaluation = $requete_preparee->fetchObject("Evaluation")){
+            return $evaluation;
+        }
+        return new Evaluation();
     }
     
     /**

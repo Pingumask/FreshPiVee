@@ -22,7 +22,10 @@ class User implements databaseObject{
         $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM user WHERE id_user=:id_user");
         //On commence par préparer la base de données à recevoir une requete avec un marqueur qui lui indique quelle partie de la requete doit recevoir une variable        
         $requete_preparee->execute([':id_user'=> $id_user]);//on execute la requete préparée précédement en lui donnant sous forme d'un array les valeurs qui doivent remplacer les marqueurs
-        return $requete_preparee->fetchObject("User");//On transforme la réponse de la BDD en un objet de la classe User et on le renvoit comme résultat de la fonction        
+        if ($user = $requete_preparee->fetchObject("User")){
+            return $user;//On transforme la réponse de la BDD en un objet de la classe User et on le renvoit comme résultat de la fonction
+        }   
+        return new User();   
     }
     
     /**
@@ -173,5 +176,27 @@ class User implements databaseObject{
             return $errors;
         }
         return $this->create($nickname, $email, $password, $birthday);
+    }
+
+    /**
+     * Récupère un User dans la base de données en fonction de son email et de son mot de passe
+     * 
+     * @param string $email le courriel recherché
+     * @param string $password le mot de passe non hashé recherché
+     * 
+     * @return User Le User trouvé ou un User vide si pas de correspondance
+     */
+    public static function loadByEmailAndPassword(string $email, string $password):User{
+        $requete_preparee = $GLOBALS['database']->prepare(
+            "SELECT * FROM user 
+            WHERE `email`=:email 
+            `password`= SHA1(CONCAT(self::SALT,:pwd,`signed_up`))
+            LIMIT 1"
+        );
+        $reussite = $requete_preparee->execute([':email'=> $email,':pwd'=>$password]);
+        if($reussite){
+            return $requete_preparee->fetchObject("User");   
+        }
+        return new User();
     }
 }

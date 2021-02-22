@@ -6,8 +6,8 @@ require_once("./model/upload.class.php");
 
 class Comment implements databaseObject{
     public ?int $id_comment=null;
-	public int $id_user;//L'id du User qui a laissé ce commentaire
-	public int $id_upload;//L'id de l'Upload qui a reçu ce commentaire
+	public ?int $id_user=null;//L'id du User qui a laissé ce commentaire
+	public ?int $id_upload=null;//L'id de l'Upload qui a reçu ce commentaire
 	private string $comment_time;//Le Datetime auquel ce commentaire a été fait
     public string $comment_content;//Le texte contenu dans ce commentaire
 
@@ -26,7 +26,10 @@ class Comment implements databaseObject{
             ':id_comment'=> $id_comment
         );
         $requete_preparee->execute($parametres);
-        return $requete_preparee->fetchObject("Comment");
+        if($comment = $requete_preparee->fetchObject("Comment")){
+            return $comment;
+        }
+        return new Comment();
     }
 
     /**
