@@ -1,1 +1,1 @@
-<h2>Bienvenue <?php echo $member->nickname;?></h2>
+<h2>Bienvenue <?php echo $_SESSION['user']->nickname;?></h2>
