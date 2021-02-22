@@ -8,8 +8,8 @@ class Evaluation implements databaseObject{
     public ?int $id_evaluation=null;
     public ?int $id_user=null;//L'id du User qui a fait l'évaluation
     public ?int $id_upload=null;//L'id de l'Upload qui est évalué
-    public string $evaluation_type;//Le type d'évaluation ("like","dislike","favorite")
-    private string $evaluation_time;//L'heure de création de l'évaluation
+    public string $evaluation_type="";//Le type d'évaluation ("like","dislike","favorite")
+    private string $evaluation_time="";//L'heure de création de l'évaluation
 
     private ?User $user=null;//Les informations completes de l'utilisateur qui a créé l'évaluation
     private ?Upload $upload=null;//Les informations completes de l'upload qui est évalué

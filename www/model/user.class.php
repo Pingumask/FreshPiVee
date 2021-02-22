@@ -5,11 +5,11 @@ require_once("./model/databaseObject.interface.php");
 class User implements databaseObject{
     const SALT = "%'@jygFUT1646`[|~{#";//Le sel qui sera utilisé pour le Hash de nos mots de passe
     public ?int $id_user=null;
-    public string $nickname;//Le pseudo du User
-    public string $email;//Le courriel du User
-    private string $password;//Le mot de passe du User
-    public string $birthday;//La date de naissance du User
-    private string $signed_up;//L'heure d'inscription du User, elle est private pour interdire sa modification car elle servira de poivre dans le hash de nos mots de passe
+    public string $nickname="";//Le pseudo du User
+    public string $email="";//Le courriel du User
+    private string $password="";//Le mot de passe du User
+    public string $birthday="";//La date de naissance du User
+    private string $signed_up="";//L'heure d'inscription du User, elle est private pour interdire sa modification car elle servira de poivre dans le hash de nos mots de passe
 
     /**
      * Récupère un User dans la base de données en fonction de son id

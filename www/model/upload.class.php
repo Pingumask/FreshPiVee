@@ -7,10 +7,10 @@ class Upload implements databaseObject{
     public ?int $id_upload=null;
     public ?int $id_uploader=null;//L'id du User qui a effectué cet upload
     private string $upload_time;//L'heure à laquelle cet upload a été effectué
-    public string $title;//Le titre de cet upload
-    public string $description;//La description de cet upload
-    public string $path;//Le chemin sur le disque dur vers cet upload
-    public string $media_type;//Le type de media de cet upload (picture,video)
+    public string $title="";//Le titre de cet upload
+    public string $description="";//La description de cet upload
+    public string $path="";//Le chemin sur le disque dur vers cet upload
+    public string $media_type="";//Le type de media de cet upload (picture,video)
 
     private ?User $uploader=null;//Les informations complètes sur le user qui a effectué cet Upload
 
