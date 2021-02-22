@@ -99,7 +99,7 @@ main input[type=submit]:hover, main button:hover{
     max-width:80%;
 }
 
-[page=picture], [page=video]{
+main{
     display:grid;
 }
 
