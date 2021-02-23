@@ -134,4 +134,26 @@ class Upload implements databaseObject{
     public function getLikePercentage():int{
         return 50;
     }
+
+    /**
+     * Récupère les 50 dernières photos
+     * 
+     * @return array La liste des 50 dernières photos sous forme d'objets de la classe Upload
+     */
+    public static function getNewestPictures():array{
+        $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM `upload` WHERE media_type='picture' ORDER BY upload_time DESC LIMIT 50 ");
+        $requete_preparee->execute();        
+        return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+    }
+
+    /**
+     * Récupère les 50 dernières vidéos
+     * 
+     * @return array La liste des 50 dernières vidéos sous forme d'objets de la classe Upload
+     */
+    public static function getNewestVideos():array{
+        $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM `upload` WHERE media_type='video' ORDER BY upload_time DESC LIMIT 50 ");
+        $requete_preparee->execute();        
+        return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+    }
 }

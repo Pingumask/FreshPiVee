@@ -1,0 +1,13 @@
+main{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-around;
+}
+
+h2{
+    width:100%;
+}
+
+figure{
+    margin:15px;
+}

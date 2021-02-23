@@ -101,6 +101,11 @@ main input[type=submit]:hover, main button:hover{
 
 main{
     display:grid;
+    padding:20px;
+}
+
+figure img, figure video{
+    max-height:20vh;
 }
 
 @media(orientation:landscape){
