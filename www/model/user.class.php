@@ -4,12 +4,12 @@ require_once("./model/pdo.php");
 require_once("./model/databaseObject.interface.php");
 class User implements databaseObject{
     const SALT = "%'@jygFUT1646`[|~{#";//Le sel qui sera utilisé pour le Hash de nos mots de passe
-    public ?int $id_user=null;
-    public string $nickname="";//Le pseudo du User
-    public string $email="";//Le courriel du User
-    private string $password="";//Le mot de passe du User
-    public string $birthday="";//La date de naissance du User
-    private string $signed_up="";//L'heure d'inscription du User, elle est private pour interdire sa modification car elle servira de poivre dans le hash de nos mots de passe
+    public $id_user=null;
+    public $nickname="";//Le pseudo du User
+    public $email="";//Le courriel du User
+    private $password="";//Le mot de passe du User
+    public $birthday="";//La date de naissance du User
+    private $signed_up="";//L'heure d'inscription du User, elle est private pour interdire sa modification car elle servira de poivre dans le hash de nos mots de passe
 
     /**
      * Récupère un User dans la base de données en fonction de son id
@@ -27,7 +27,7 @@ class User implements databaseObject{
         }   
         return new User();   
     }
-    
+
     /**
      * Crée un nouveau User tout en renseignant toutes ses infos
      * 
@@ -85,7 +85,7 @@ class User implements databaseObject{
     public function getPassword():string{
         return $this->password;
     }
-    
+
     /**
      * Enregistre en base de données ce User
      * 

@@ -4,15 +4,15 @@ require_once("./model/databaseObject.interface.php");
 require_once('./model/user.class.php');
 
 class Upload implements databaseObject{
-    public ?int $id_upload=null;
-    public ?int $id_uploader=null;//L'id du User qui a effectué cet upload
-    private string $upload_time;//L'heure à laquelle cet upload a été effectué
-    public string $title="";//Le titre de cet upload
-    public string $description="";//La description de cet upload
-    public string $path="";//Le chemin sur le disque dur vers cet upload
-    public string $media_type="";//Le type de media de cet upload (picture,video)
+    public $id_upload=null;
+    public $id_uploader=null;//L'id du User qui a effectué cet upload
+    private $upload_time;//L'heure à laquelle cet upload a été effectué
+    public $title="";//Le titre de cet upload
+    public $description="";//La description de cet upload
+    public $path="";//Le chemin sur le disque dur vers cet upload
+    public $media_type="";//Le type de media de cet upload (picture,video)
 
-    private ?User $uploader=null;//Les informations complètes sur le user qui a effectué cet Upload
+    private $uploader=null;//Les informations complètes sur le user qui a effectué cet Upload
 
     /**
      * Récupère un Upload dans la base de données à partir de son id
