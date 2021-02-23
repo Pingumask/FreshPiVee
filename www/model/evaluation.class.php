@@ -127,4 +127,37 @@ class Evaluation implements databaseObject{
             }
         }
     }
+
+    /**
+     * TODO doc
+     */
+    public static function toggleEvaluation(int $id_user, int $id_upload, string $type):void{
+        $resultat=self::getPrecise($id_user,$id_upload,$type);
+        if($resultat){
+            self::deleteById($resultat->id_evaluation);
+            return;
+        }
+        $newEvaluation=self::create($id_user,$id_upload,$type);
+        $newEvaluation->save();
+    }
+
+    /**
+     * TODO doc
+     */
+    public static function deleteById(int $id):void{
+        $requete_suppression=$GLOBALS['database']->prepare("DELETE FROM evaluation WHERE id_evaluation=:id");
+            $requete_suppression->execute([
+                ':id'=> $id
+            ]);
+    }
+
+    public static function getPrecise(int $id_user, int $id_upload, string $type){
+        $requete_preparee=$GLOBALS['database']->prepare("SELECT * FROM evaluation WHERE id_user=:id_user AND id_upload=:id_upload AND evaluation_type=:evaluation_type LIMIT 1");
+        $requete_preparee->execute([
+            ':id_user'=>$id_user,
+            ':id_upload'=>$id_upload,
+            ':evaluation_type'=>$type
+        ]);
+        return $requete_preparee->fetchObject("Evaluation");
+    }
 }

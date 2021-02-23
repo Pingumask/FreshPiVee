@@ -8,6 +8,7 @@
 	box-sizing: border-box;
     margin: 0;
     padding:0;
+    transition:1.5s ease-in-out;
 }
 
 @font-face {
@@ -91,6 +92,16 @@ main input[type=submit]:hover, main button:hover{
     cursor:pointer;
 }
 
+input[type=submit].active, button.active{
+    background-color:var(--text-color);
+    color:var(--main-background);
+}
+
+input[type=submit].active:hover, button.active:hover{
+    background-color:var(--buttons-color);
+    color:var(--text-color);
+}
+
 #top_menu input[type=submit]{
     border-radius:0 5px 5px 0;
 }
@@ -106,6 +117,28 @@ main{
 
 figure img, figure video{
     max-height:20vh;
+    max-width:18vw;
+}
+
+figure{
+    height:20vh;
+    width:18vw;
+    position:relative;
+    background:var(--text-color);
+    color:white;
+    text-align:center;
+}
+
+figure figcaption{
+    position:absolute;
+    bottom:0px;
+    text-align:center;
+    width:100%;
+    background:#2441469f;
+}
+
+#likeBar{
+    background:#992323;
 }
 
 @media(orientation:landscape){

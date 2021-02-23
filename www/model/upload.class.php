@@ -129,10 +129,41 @@ class Upload implements databaseObject{
     }
 
     /**
-     * TODO
+     * TODO doc
      */
     public function getLikePercentage():int{
-        return 50;
+        $likes=$this->getLikesNumber();       
+        $dislikes=$this->getDislikesNumber();   
+        if($likes+$dislikes==0) return 100;     
+        $pourcentage=ceil(($likes/($likes+$dislikes))*100);
+        return $pourcentage;
+    }
+
+    /**
+     * TODO doc
+     */
+    public function getLikesNumber():int{
+        return $this->getEvaluationsNumber('like');
+    }
+
+    /**
+     * TODO doc
+     */
+    public function getDislikesNumber():int{
+        return $this->getEvaluationsNumber('dislike');
+    }
+
+    /**
+     * TODO doc
+     */
+    public function getEvaluationsNumber(string $type):int{
+        $compter_evaluations=$GLOBALS['database']->prepare("SELECT count(id_evaluation) as nb FROM evaluation WHERE evaluation_type=:evaluation_type AND id_upload=:id_upload");
+        $compter_evaluations->execute([
+            ':id_upload'=>$this->id_upload,
+            ':evaluation_type'=>$type
+            ]);
+        $evaluations=$compter_evaluations->fetch();
+        return $evaluations['nb'];
     }
 
     /**
@@ -153,6 +184,17 @@ class Upload implements databaseObject{
      */
     public static function getNewestVideos():array{
         $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM `upload` WHERE media_type='video' ORDER BY upload_time DESC LIMIT 50 ");
+        $requete_preparee->execute();        
+        return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+    }
+
+    /**
+     * Récupère les 50 dernièrs uploads
+     * 
+     * @return array La liste des 50 dernièrs uploads sous forme d'objets de la classe Upload
+     */
+    public static function getNewestMedias():array{
+        $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM `upload` ORDER BY upload_time DESC LIMIT 50 ");
         $requete_preparee->execute();        
         return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
     }

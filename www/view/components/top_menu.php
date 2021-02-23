@@ -7,6 +7,7 @@
             <span class="pivee">PiVee</span>
         </h1>
     </a>
+    <button id="darkMode">🌘</button>
     <form action="./search.php" method="get">
         <input type="text" name="search" placeholder="search"/>
         <input type="submit" value="🔍"/>

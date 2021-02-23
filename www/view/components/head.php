@@ -5,4 +5,5 @@
 if (isset($currentPage) && file_exists("./style/$currentPage.css")){
     printf('<link rel="stylesheet" href="./style/%s.css">',$currentPage);
 }?>
+<script src="./js/darkMode.js" defer></script>
 <title>Fresh PiVee : <?php echo $currentPage;?></title>
