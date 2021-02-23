@@ -17,7 +17,7 @@ class Evaluation implements databaseObject{
     /**
      * Récupère dans la base de données l'évaluation correspondant à l'id demandé
      * 
-     * @param int $id_evaluation L'id de l'objet à aller chercher dans la base de données 
+     * @param int $id_evaluation L'id de l'objet à aller chercher dans la base de données
      * @return Evaluation
      */
     public static function loadById( int $id_evaluation):Evaluation{
@@ -68,6 +68,8 @@ class Evaluation implements databaseObject{
 
     /**
      * Récupère l'heure à laquelle l'évaluation a été effectuée
+     * 
+     * @return string La date à laquelle l'évaluation a été créée
      */
     public function getEvaluationTime():string{
         return $this->evaluation_time;

@@ -3,7 +3,7 @@
     <head>
         <?php require_once("view/components/head.php");?>
     </head>
-    <body>
+    <body class="">
             <?php include("view/components/top_menu.php");?>
             <main page="<?php echo $currentPage;?>">
                 <?php include("view/pages/$currentPage.php");?>

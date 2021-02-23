@@ -196,3 +196,9 @@ main{
         display:none;
     }
 }
+
+body.dark{
+    --main-background: #0a0c0c;
+	--buttons-color: #244146;
+	--text-color: #2d6670;
+}

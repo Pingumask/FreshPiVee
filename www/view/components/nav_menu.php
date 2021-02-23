@@ -13,7 +13,7 @@
     </a>
     <a href="./" id="home_button" <?php if($currentPage=="trending"){echo 'class="active_menu"';}?>>
         <img src="./ressources/image/icone_nav/icone_accueil.svg" alt="icone d'accueil">
-        <span>Trending</span>
+        <span>Home</span>
     </a>
     <a href="./contacts.php" href="" <?php if($currentPage=="contacts"){echo 'class="active_menu"';}?>>
         <img src="./ressources/image/icone_nav/icone_amis.svg" alt="Amis">
