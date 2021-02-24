@@ -30,10 +30,11 @@ switch($_FILES['upload']['type']){
     case "video/webm":
     case "video/3gpp":
     case "video/3gpp2":
+    case "video/mp4";
         $media_type="video";
         break;
     default:
-        $_SESSION['error']="Unsupported file format";
+        $_SESSION['error']="Unsupported file format : ".$_FILES['upload']['type'];
         header("location:./upload.php");
         exit();
 }
