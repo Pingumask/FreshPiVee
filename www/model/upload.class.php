@@ -13,7 +13,7 @@ class Upload implements databaseObject{
     public $media_type="";//Le type de media de cet upload (picture,video)
 
     private $uploader=null;//Les informations complètes sur le user qui a effectué cet Upload
-
+    
     /**
      * Récupère un Upload dans la base de données à partir de son id
      * 
@@ -123,8 +123,17 @@ class Upload implements databaseObject{
 
     /**
      * TODO
+     * @return array La liste des 50 derniers commentaires sur cet upload
      */
     public function getCommentList():array{
+        $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM `comment` WHERE id_upload=:id_upload ");
+        $commentaires= array( 
+            ":id_upload"=> $this->id_upload,
+        );
+        $requete_preparee->execute($commentaires);
+        if($resultats = $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Comment")){
+            return $resultats;
+        }
         return [];
     }
 

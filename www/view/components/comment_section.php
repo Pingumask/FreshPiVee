@@ -1,10 +1,11 @@
 <section id="comments">
     <form action="handle_new_comment.php" method="post">
+        <input type="hidden" name="id_upload" value="<?php echo $media->id_upload?>" />
         <textarea name="comment_content" id="" cols="30" rows="10"></textarea>
         <input type="submit" value="📩"/>
     </form>
     <?php
     foreach($media->getCommentList() as $comment){
-        echo '<div class="comment">'.$comment->comment_content.'</div>';
+        include("./view/components/comment.php");
     }?>
 </section>
