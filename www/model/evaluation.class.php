@@ -5,14 +5,14 @@ require_once("./model/user.class.php");
 require_once("./model/upload.class.php");
 
 class Evaluation implements databaseObject{
-    public ?int $id_evaluation=null;
-    public ?int $id_user=null;//L'id du User qui a fait l'évaluation
-    public ?int $id_upload=null;//L'id de l'Upload qui est évalué
-    public string $evaluation_type="";//Le type d'évaluation ("like","dislike","favorite")
-    private string $evaluation_time="";//L'heure de création de l'évaluation
+    public $id_evaluation=null;
+    public $id_user=null;//L'id du User qui a fait l'évaluation
+    public $id_upload=null;//L'id de l'Upload qui est évalué
+    public $evaluation_type="";//Le type d'évaluation ("like","dislike","favorite")
+    private $evaluation_time="";//L'heure de création de l'évaluation
 
-    private ?User $user=null;//Les informations completes de l'utilisateur qui a créé l'évaluation
-    private ?Upload $upload=null;//Les informations completes de l'upload qui est évalué
+    private $user=null;//Les informations completes de l'utilisateur qui a créé l'évaluation
+    private $upload=null;//Les informations completes de l'upload qui est évalué
     
     /**
      * Récupère dans la base de données l'évaluation correspondant à l'id demandé
@@ -102,7 +102,7 @@ class Evaluation implements databaseObject{
      * 
      * @return void
      */
-    public function save():void{
+    public function save(){
         if($this->id_evaluation!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE evaluation SET `id_user`=:id_user, `id_upload`=:id_upload, `evaluation_type`=:evaluation_type, WHERE `id_evaluation`=:id_evaluation");

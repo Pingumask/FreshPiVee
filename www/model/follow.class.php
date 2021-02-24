@@ -3,12 +3,12 @@ require_once("./model/pdo.php");
 require_once("./model/databaseObject.interface.php");
 require_once("./model/user.class.php");
 class Follow implements databaseObject{
-    public ?int $id_follow=null;
-    public ?int $id_follower=null;//L'id du User qui effectue le Follow
-    public ?int $id_followed=null;//L'id du User qui reçoit le Follow
+    public $id_follow=null;
+    public $id_follower=null;//L'id du User qui effectue le Follow
+    public $id_followed=null;//L'id du User qui reçoit le Follow
 
-    private ?User $follower=null;//Les informations complètes du User qui effectue le Follow
-    private ?User $followed=null;//Les informations complètes du User qui reçoit le Follow
+    private $follower=null;//Les informations complètes du User qui effectue le Follow
+    private $followed=null;//Les informations complètes du User qui reçoit le Follow
 
     /**
      * Récupère dans la base de données le Follow correspondant à l'id demandé
@@ -87,7 +87,7 @@ class Follow implements databaseObject{
      * 
      * @return void
      */
-    public function save():void{
+    public function save(){
         if($this->id_follow!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE follow SET `id_follower`=:id_follower, `id_followed`=:id_followed WHERE `id_follow`=:id_follow");

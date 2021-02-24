@@ -102,7 +102,7 @@ class Comment implements databaseObject{
      * 
      * @return void
      */
-    public function save():void{
+    public function save(){
         if($this->id_comment!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE comment SET `id_user`=:id_user,`id_upload`=:id_upload, `comment_content`=:comment_content WHERE `id_comment`=:id_comment");

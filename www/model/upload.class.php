@@ -91,7 +91,7 @@ class Upload implements databaseObject{
      * 
      * @return void
      */
-    public function save():void{
+    public function save(){
         if($this->id_upload!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE upload SET `id_uploader`=:id_uploader, `title`=:title, `description`=:descript, `path`=:chemin, `media_type`=:media_type WHERE `id_upload`=:id_upload");

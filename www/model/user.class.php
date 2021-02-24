@@ -94,7 +94,7 @@ class User implements databaseObject{
      * 
      * @return void
      */
-    public function save():void{
+    public function save(){
         if($this->id_user!=null){
             //faire un UPDATE dans la base de données
             $requete_preparee=$GLOBALS['database']->prepare("UPDATE user SET `nickname`=:nickname, `email`=:email, `password`=:pwd, `birthday`=:birthday WHERE `id_user`=:id_user");
