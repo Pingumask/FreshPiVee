@@ -12,7 +12,7 @@
 }
 
 @font-face {
-    font-family: "harrigton";
+    font-family: "harrington";
     src: url("../ressources/fonts/Harrington.ttf");
 }
 
@@ -23,18 +23,24 @@ body {
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    font-family:harrigton, tahoma, serif;
+    font-family:harrington, tahoma, serif;
 }
 
 main{
     display:flex;
     align-items:center;
     justify-content:center;
+    font-family: Montserrat, tahoma, serif;
 }
 
 
-h1 a{
-    text-decoration:none;
+h1{
+    font-size:40px;
+}
+
+h2{
+    font-family:harrington, tahoma, serif;
+    font-size:2.2em;
 }
 
 .fresh{
@@ -45,7 +51,7 @@ h1 a{
 .pivee{
     color:black;
     position:relative;
-    top:-15px;
+    top:-8px;
 }
 
 .menu {
@@ -151,6 +157,37 @@ figure figcaption{
 #likeBar{
     background:green;
     height:100%;
+}
+
+#evaluation{
+    width:80%;
+}
+
+#comments{
+    margin-top:20px;
+    
+}
+
+.comment{
+    margin-top:10px;
+    margin-bottom:10px;
+    border: 1px solid var(--text-color);
+    width:80%;
+    padding:5px;
+}
+
+.comment h4{
+    font-size:1.2em;
+}
+
+.comment em{
+    font-size:0.8em;
+    margin-right:20px;
+}
+
+#comment_content{
+    width:80%;
+    height:8vh;
 }
 
 @media(orientation:landscape){
