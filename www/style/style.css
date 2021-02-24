@@ -8,7 +8,7 @@
 	box-sizing: border-box;
     margin: 0;
     padding:0;
-    transition:1.5s ease-in-out;
+    transition: background 1.5s ease-in-out;
 }
 
 @font-face {
@@ -137,8 +137,20 @@ figure figcaption{
     background:#2441469f;
 }
 
+#evaluation{
+    display:flex;
+    justify-content:space-between;
+}
+
+#likeBarContainer{
+    background:#833333;
+    height:20px;
+    width:100px;
+}
+
 #likeBar{
-    background:#992323;
+    background:green;
+    height:100%;
 }
 
 @media(orientation:landscape){
