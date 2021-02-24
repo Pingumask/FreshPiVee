@@ -20,9 +20,9 @@ switch($media->media_type){
 }
 
 if(isset($_SESSION['user'])){
-    $liked=(Evaluation::getPrecise($id_user,$_GET['id'],'like') instanceof Evaluation);
-    $disliked=(Evaluation::getPrecise($id_user,$_GET['id'],'dislike') instanceof Evaluation);
-    $favorited=(Evaluation::getPrecise($id_user,$_GET['id'],'favorite') instanceof Evaluation);
+    $liked=(Evaluation::getPrecise($_SESSION['user']->id_user,$_GET['id'],'like') instanceof Evaluation);
+    $disliked=(Evaluation::getPrecise($_SESSION['user']->id_user,$_GET['id'],'dislike') instanceof Evaluation);
+    $favorited=(Evaluation::getPrecise($_SESSION['user']->id_user,$_GET['id'],'favorite') instanceof Evaluation);
 } 
 else{
     $liked = $disliked = $favorited = false;
