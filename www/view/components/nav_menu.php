@@ -11,7 +11,7 @@
         <img src="./ressources/image/icone_nav/icone_video.svg" alt="Uploade de vidéo ou images">
         <span>Videos</span>
     </a>
-    <a href="./" id="home_button" <?php if($currentPage=="trending"){echo 'class="active_menu"';}?>>
+    <a href="./" id="home_button" <?php if($currentPage=="news"){echo 'class="active_menu"';}?>>
         <img src="./ressources/image/icone_nav/icone_accueil.svg" alt="icone d'accueil">
         <span>Home</span>
     </a>
