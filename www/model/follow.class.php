@@ -109,4 +109,39 @@ class Follow implements databaseObject{
             }
         }
     }
+
+    /**
+     * TODO doc
+     */
+    public static function toggle(int $id_follower, int $id_followed):void{
+        $resultat=self::getPrecise($id_follower,$id_followed);
+        if($resultat){
+            self::deleteById($resultat->id_follow);
+            return;
+        }
+        $newFollow=self::create($id_follower, $id_followed);
+        $newFollow->save();
+    }
+
+    /**
+     * TODO doc
+     */
+    public static function getPrecise(int $id_follower, int $id_followed){
+        $requete_preparee=$GLOBALS['database']->prepare("SELECT * FROM follow WHERE id_follower=:id_follower AND id_followed=:id_followed LIMIT 1");
+        $requete_preparee->execute([
+            ':id_follower'=>$id_follower,
+            ':id_followed'=>$id_followed,            
+        ]);
+        return $requete_preparee->fetchObject("Follow");
+    }
+
+    /**
+     * TODO doc
+     */
+    public static function deleteById(int $id):void{
+        $requete_suppression=$GLOBALS['database']->prepare("DELETE FROM follow WHERE id_follow=:id");
+        $requete_suppression->execute([
+            ':id'=> $id
+        ]);
+    }
 }

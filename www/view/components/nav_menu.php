@@ -19,8 +19,8 @@
         <img src="./ressources/image/icone_nav/icone_amis.svg" alt="Amis">
         <span>Contacts</span>
     </a>
-    <a href="./settings.php" href="" <?php if($currentPage=="settings"){echo 'class="active_menu"';}?>>
+    <a href="./favorites.php" href="" <?php if($currentPage=="favorites"){echo 'class="active_menu"';}?>>
         <img src="./ressources/image/icone_nav/icone_settings.svg" alt="réglages">
-        <span>Settings</span>
+        <span>Favorites</span>
     </a>
 </nav>

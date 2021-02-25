@@ -5,7 +5,7 @@
     </head>
     <body class="">
             <?php include("view/components/top_menu.php");?>
-            <main page="<?php echo $currentPage;?>">
+            <main page="<?=$currentPage;?>">
                 <?php include("view/pages/$currentPage.php");?>
             </main>
             <?php include("view/components/nav_menu.php");?>

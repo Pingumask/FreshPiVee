@@ -146,11 +146,14 @@ class Evaluation implements databaseObject{
      */
     public static function deleteById(int $id):void{
         $requete_suppression=$GLOBALS['database']->prepare("DELETE FROM evaluation WHERE id_evaluation=:id");
-            $requete_suppression->execute([
-                ':id'=> $id
-            ]);
+        $requete_suppression->execute([
+            ':id'=> $id
+        ]);
     }
 
+    /**
+     * TODO doc
+     */
     public static function getPrecise(int $id_user, int $id_upload, string $type){
         $requete_preparee=$GLOBALS['database']->prepare("SELECT * FROM evaluation WHERE id_user=:id_user AND id_upload=:id_upload AND evaluation_type=:evaluation_type LIMIT 1");
         $requete_preparee->execute([

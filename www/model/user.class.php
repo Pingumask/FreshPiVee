@@ -199,4 +199,18 @@ class User implements databaseObject{
         }
         return new User();
     }
+
+    /**
+     * @return array La liste des upload favoris de ce User
+     */
+    public function getFavorites():array{
+        $requete_preparee= $GLOBALS['database']->prepare("SELECT upload.* FROM `user` JOIN evaluation ON user.id_user=evaluation.id_user JOIN upload ON evaluation.id_upload=upload.id_upload WHERE evaluation.id_user=:id_user AND evaluation.evaluation_type='favorite' ORDER BY evaluation.evaluation_time DESC LIMIT 500");
+        $reussite=$requete_preparee->execute([
+            ':id_user'=>$this->id_user
+        ]);
+        if($reussite){
+            return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+        }
+        return [];
+    }
 }
