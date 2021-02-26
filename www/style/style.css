@@ -149,7 +149,7 @@ figure{
     margin:15px;
 }
 
-main>a>figure>img, main>a>figure>video{
+main a>figure>img, main a>figure>video{
     max-width:90vw;
 }
 
@@ -231,9 +231,18 @@ figure figcaption{
     flex-direction:column;
 }
 
-[page=picture]>section,[page=video]>section{
+[page=picture]>section,[page=video]>section,[page=member]>section{
     width:80%;
     margin:10px 0;
+}
+
+#uploads{
+    display:flex;
+    flex-wrap:wrap;
+}
+
+[page=member] #uploader{
+    width:100%;
 }
 
 #uploader form{
@@ -343,12 +352,12 @@ figure figcaption{
         display:none;
     }
 
-    main>a>figure>img, main>a>figure>video{
+    main a>figure>img, main a>figure>video{
         max-width:15vw;
         max-height:15vh;
     }
 
-    main>a>figure{
+    main a>figure{
         width:15vw;
         height:15vh;
     }
@@ -357,5 +366,5 @@ figure figcaption{
 body.dark{
     --main-background: #0a0c0c;
 	--buttons-color: #244146;
-	--text-color: #2d6670;
+	--text-color: #517379;
 }

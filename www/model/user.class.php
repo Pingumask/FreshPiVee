@@ -1,6 +1,7 @@
 <?php
 //On importe notre PDO pour avoir une connexion à la base de données
 require_once("./model/pdo.php");
+require_once("./model/upload.class.php");
 require_once("./model/databaseObject.interface.php");
 class User implements databaseObject{
     const SALT = "%'@jygFUT1646`[|~{#";//Le sel qui sera utilisé pour le Hash de nos mots de passe
@@ -59,7 +60,7 @@ class User implements databaseObject{
      * @return string La date d'inscription
      */
     public function getSignedUp():string{
-        return $this->signedUp;
+        return $this->signed_up;
     }
 
     /**
@@ -237,5 +238,22 @@ class User implements databaseObject{
         }
         return [];
     }
-    
+
+    /**
+     * @return array La liste des uploads réalisés par ce User
+     */
+    public function getUploads():array{
+        $requete_preparee = $GLOBALS['database']->prepare("SELECT upload.* FROM `user` 
+            JOIN `upload` ON upload.id_uploader=user.id_user
+            WHERE user.id_user=:id_user
+            ORDER BY upload.upload_time DESC
+            LIMIT 100");
+        $reussite= $requete_preparee->execute([
+            ':id_user'=>$this->id_user
+        ]);
+        if($reussite){
+            return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+        }
+        return [];
+    }
 }

@@ -14,4 +14,9 @@ if(!isset($_POST['id_upload']) || !isset($_POST['id_followed'])){
 
 $newFollow = Follow::toggle($_SESSION['user']->id_user,intval($_POST['id_followed']));
 
-header("location:./view.php?id=".$_POST['id_upload']);
+if(isset($_POST['id_upload'])){
+    header("location:./view.php?id=".$_POST['id_upload']);
+}
+else{
+    header("location:./member.php?id=".$_POST['id_followed']);
+}
