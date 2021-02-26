@@ -213,4 +213,29 @@ class User implements databaseObject{
         }
         return [];
     }
+
+    /**
+     * 
+     * @return array La liste des uploads qui ont été fait par un utilisateur qui a été follow par l'utilisateur actuel
+     */
+    public function getUploadsFromFollowed():array{
+        $requete_preparee= $GLOBALS['database']->prepare("SELECT upload.* FROM `user` AS follower 
+            JOIN follow ON follower.id_user=follow.id_follower 
+            JOIN user AS followed ON follow.id_followed=followed.id_user 
+            JOIN upload ON followed.id_user=upload.id_uploader 
+            WHERE follower.id_user=:id_user
+            ORDER BY upload.upload_time DESC
+            LIMIT 100"
+        );
+        
+        $reussite=$requete_preparee->execute([
+            ':id_user'=>$this->id_user
+        ]);
+
+        if($reussite){
+            return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+        }
+        return [];
+    }
+    
 }

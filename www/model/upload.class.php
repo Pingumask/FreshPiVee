@@ -122,11 +122,11 @@ class Upload implements databaseObject{
     }
 
     /**
-     * TODO
-     * @return array La liste des 50 derniers commentaires sur cet upload
+     * 
+     * @return array La liste des 500 derniers commentaires sur cet upload
      */
     public function getCommentList():array{
-        $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM `comment` WHERE id_upload=:id_upload ORDER BY comment_time DESC LIMIT 50");
+        $requete_preparee = $GLOBALS['database']->prepare("SELECT * FROM `comment` WHERE id_upload=:id_upload ORDER BY comment_time DESC LIMIT 500");
         $commentaires= array( 
             ":id_upload"=> $this->id_upload,
         );

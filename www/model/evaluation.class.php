@@ -129,7 +129,9 @@ class Evaluation implements databaseObject{
     }
 
     /**
-     * TODO doc
+     * @param int $id_user L'id de l'utilisateur qui vient de cliquer sur une évaluation
+     * @param int $id_upload L'upload qui se fait évaluer
+     * @param string $type le type d'evaluation effectué (like, dislike, favorite)
      */
     public static function toggleEvaluation(int $id_user, int $id_upload, string $type):void{
         $resultat=self::getPrecise($id_user,$id_upload,$type);
@@ -143,6 +145,8 @@ class Evaluation implements databaseObject{
 
     /**
      * TODO doc
+     * @param int $id l'id de l'Evaluation qui doit être supprimée
+     * @return void
      */
     public static function deleteById(int $id):void{
         $requete_suppression=$GLOBALS['database']->prepare("DELETE FROM evaluation WHERE id_evaluation=:id");

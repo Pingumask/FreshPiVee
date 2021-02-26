@@ -9,6 +9,18 @@
     margin: 0;
     padding:0;
     transition: background 1.5s ease-in-out;
+    scrollbar-color: var(--text-color) var(--buttons-color);
+    scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar{
+    background-color:var(--buttons-color);
+    width:5px;
+}
+
+*::-webkit-scrollbar-thumb{
+    background:var(--text-color);
+    border-radius:2px;
 }
 
 @font-face {
@@ -20,19 +32,8 @@ body {
 	min-height: 100vh;	
     background-color:var(--main-background);
     color:var(--text-color);
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
     font-family:harrington, tahoma, serif;
 }
-
-main{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family: Montserrat, tahoma, serif;
-}
-
 
 h1{
     font-size:40px;
@@ -71,8 +72,20 @@ h2{
     display:none;
 }
 
+#top_menu a.logo{
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+}
+
 #top_menu .logo h1{
-    display:none;
+    font-size:1.4em;
+}
+
+#nav_menu{
+    position:fixed;
+    bottom:0;
+    width:100vw;
 }
 
 #nav_menu .logo{
@@ -117,18 +130,32 @@ input[type=submit].active:hover, button.active:hover{
 }
 
 main{
-    display:grid;
-    padding:20px;
+    display:flex;    
+    flex-wrap:wrap;    
+    justify-content:space-around;
+    align-items:center;
+    justify-content:center;
+    font-family: Montserrat, tahoma, serif;
+    padding:2vh;
+    padding-bottom:20vh;
 }
 
-figure img, figure video{
-    max-height:20vh;
-    max-width:18vw;
+
+h2{
+    width:100%;
 }
 
 figure{
-    height:20vh;
-    width:18vw;
+    margin:15px;
+}
+
+main>a>figure>img, main>a>figure>video{
+    max-width:90vw;
+}
+
+figure{
+    width:90vw;
+    min-height:10vh;
     position:relative;
     background:var(--text-color);
     color:white;
@@ -164,16 +191,26 @@ figure figcaption{
 }
 
 #comments{
-    margin-top:20px;
-    
+    margin-top:20px;    
+}
+
+#comments form{
+    display:flex;
+}
+
+#comments form input[type=submit]{
+    border-radius:0 5px 5px 0;
 }
 
 .comment{
     margin-top:10px;
     margin-bottom:10px;
     border: 1px solid var(--text-color);
-    width:80%;
     padding:5px;
+}
+
+#uploader h4{
+    margin-left:15px;
 }
 
 .comment h4{
@@ -190,12 +227,35 @@ figure figcaption{
     height:8vh;
 }
 
+[page=picture],[page=video]{
+    flex-direction:column;
+}
+
+[page=picture]>section,[page=video]>section{
+    width:80%;
+    margin:10px 0;
+}
+
+#uploader form{
+    display:flex;
+    flex-direction: row;
+    align-items:center;
+}
+
+#darkMode{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    font-size:1.6em;
+}
+
 @media(orientation:landscape){
 
     body{
+        height:100vh;
         display:grid;
         grid-template-rows: 7vh 1fr;
-        grid-template-columns:20vw 1fr;
+        grid-template-columns:300px 1fr;
         grid-template-areas:    'menu top'
                                 'menu content';
     }
@@ -203,17 +263,17 @@ figure figcaption{
     #top_menu{
         grid-area:top;
         justify-content:flex-end;
-    }
-    
+    }  
     
 
     #nav_menu{
+        position:initial;
         grid-area:menu;
         justify-content:flex-start;
         align-items:flex-start;
         flex-direction: column;
         padding-left:2vw;
-        min-width:200px;
+        width:300px;
     }
 
     main{
@@ -225,7 +285,7 @@ figure figcaption{
         width:5vh;
     }    
 
-    #top_menu .logo{
+    #top_menu a.logo{
         display: none;
     }
 
@@ -281,6 +341,16 @@ figure figcaption{
 
     #search_button{
         display:none;
+    }
+
+    main>a>figure>img, main>a>figure>video{
+        max-width:15vw;
+        max-height:15vh;
+    }
+
+    main>a>figure{
+        width:15vw;
+        height:15vh;
     }
 }
 
