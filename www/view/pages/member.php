@@ -1,8 +1,8 @@
 <div id="uploader">    
     <form action="./handle_follow.php" method="post">
-        <input type="hidden" name="id_followed" value="<?php echo $member->id_user;?>"/>
+        <input type="hidden" name="id_followed" value="<?=$member->id_user;?>"/>
         <input type="submit" <?php if($followed) echo 'class="active"';?> value="🕵️‍♂️"/>
-        <h2><?php echo $member->nickname;?></h2>
+        <h2><?=$member->nickname;?></h2>
         <p><?=$member->getSignedUp()?></p>
     </form>
     
