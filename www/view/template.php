@@ -6,6 +6,7 @@
     </head>
     <body <?php if(isset($_SESSION['dark'])){echo 'class="dark"';}?>>
         <?php include("view/components/top_menu.php");?>
+        <?php if(isset($_SESSION['error'])) include("view/components/toast_error.php");?>
         <main page="<?=$currentPage;?>">
             <?php include("view/pages/$currentPage.php");?>
         </main>

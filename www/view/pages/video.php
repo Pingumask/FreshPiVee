@@ -8,7 +8,7 @@
     </p>
 </video><?php
 include("./view/components/follow_form.php");?>
-<div id="description"><?= $media->description;?></div><?php 
+<div id="description"><p><?= $media->description;?></p></div><?php 
 include("./view/components/evaluation_form.php");
 include("./view/components/comment_section.php");
 include("./view/components/recomandation_section.php");?>

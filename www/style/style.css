@@ -29,10 +29,11 @@
 }
 
 body {
-	min-height: 100vh;	
+	height: 100vh;
     background-color:var(--main-background);
     color:var(--text-color);
     font-family:harrington, tahoma, serif;
+    overflow-x:hidden;
 }
 
 h1{
@@ -187,6 +188,7 @@ figure figcaption{
 }
 
 #evaluation{
+    margin:10px 0;
     width:80%;
 }
 
@@ -209,8 +211,22 @@ figure figcaption{
     padding:5px;
 }
 
+#uploader{
+    margin:10px 0;
+}
+
 #uploader h4{
     margin-left:15px;
+}
+
+#description{
+    width:80%;
+    border: 1px solid var(--text-color);
+    padding:15px;
+}
+
+#description p{
+    text-align:justify;
 }
 
 .comment h4{
@@ -256,6 +272,24 @@ figure figcaption{
     height:48px;
     border-radius:50%;
     font-size:1.6em;
+}
+
+#toastError{
+    position:absolute;
+    top:50px;
+    right:-400px;
+    width:400px;
+    padding:20px;
+    border:1px solid var(--text-color);
+    background:var(--main-background);
+    color:darkred;
+    text-align:center;
+    transition:1s;
+    box-shadow:var(--text-color) 5px 5px 5px;
+}
+
+#toastError.active{
+    right:50px;
 }
 
 @media(orientation:landscape){
