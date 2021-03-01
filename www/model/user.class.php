@@ -194,9 +194,9 @@ class User implements databaseObject{
             `password`= SHA1(CONCAT(:salt,:pwd,`signed_up`))
             LIMIT 1"
         );
-        $reussite = $requete_preparee->execute([':salt'=>self::SALT,':email'=> $email,':pwd'=>$password]);
-        if($reussite){
-            return $requete_preparee->fetchObject("User");   
+        $requete_preparee->execute([':salt'=>self::SALT,':email'=> $email,':pwd'=>$password]);
+        if($found = $requete_preparee->fetchObject("User")){
+            return $found;   
         }
         return new User();
     }
@@ -206,11 +206,11 @@ class User implements databaseObject{
      */
     public function getFavorites():array{
         $requete_preparee= $GLOBALS['database']->prepare("SELECT upload.* FROM `user` JOIN evaluation ON user.id_user=evaluation.id_user JOIN upload ON evaluation.id_upload=upload.id_upload WHERE evaluation.id_user=:id_user AND evaluation.evaluation_type='favorite' ORDER BY evaluation.evaluation_time DESC LIMIT 500");
-        $reussite=$requete_preparee->execute([
+        $requete_preparee->execute([
             ':id_user'=>$this->id_user
         ]);
-        if($reussite){
-            return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+        if($found = $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload")){
+            return $found;
         }
         return [];
     }
@@ -227,14 +227,12 @@ class User implements databaseObject{
             WHERE follower.id_user=:id_user
             ORDER BY upload.upload_time DESC
             LIMIT 100"
-        );
-        
-        $reussite=$requete_preparee->execute([
+        );        
+        $requete_preparee->execute([
             ':id_user'=>$this->id_user
         ]);
-
-        if($reussite){
-            return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+        if($found = $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload")){
+            return $found;
         }
         return [];
     }
@@ -248,11 +246,11 @@ class User implements databaseObject{
             WHERE user.id_user=:id_user
             ORDER BY upload.upload_time DESC
             LIMIT 100");
-        $reussite= $requete_preparee->execute([
+        $requete_preparee->execute([
             ':id_user'=>$this->id_user
         ]);
-        if($reussite){
-            return $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload");
+        if($found = $requete_preparee->fetchAll(PDO::FETCH_CLASS, "Upload")){
+            return $found;
         }
         return [];
     }
