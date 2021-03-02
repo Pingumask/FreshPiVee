@@ -28,21 +28,39 @@
     src: url("../ressources/fonts/Harrington.ttf");
 }
 
+@font-face {
+    font-family:"Aubrey";
+    src: url("../ressources/fonts/AUBREY1__.TTF");
+}
+
 body {
 	height: 100vh;
     background-color:var(--main-background);
     color:var(--text-color);
-    font-family:harrington, tahoma, serif;
+    font-family: Montserrat, tahoma, serif;
     overflow-x:hidden;
 }
 
+.menu {
+    font-family:Aubrey, tahoma, serif;
+	background: var(--text-color);
+    display: flex;
+	justify-content: space-around;
+	align-items: center;
+    list-style-type: none; 
+}
+
 h1{
+    font-family:harrington, tahoma, serif;
     font-size:40px;
 }
 
 h2{
-    font-family:harrington, tahoma, serif;
+    font-family:Aubrey, tahoma, serif;
     font-size:2.2em;
+    text-align:center;
+    margin-top:20px;
+    margin-bottom:40px;
 }
 
 .fresh{
@@ -56,13 +74,7 @@ h2{
     top:-8px;
 }
 
-.menu {
-	background: var(--text-color);
-    display: flex;
-	justify-content: space-around;
-	align-items: center;
-    list-style-type: none; 
-}
+
 
 .menu img{
     width: 15vw;
@@ -136,7 +148,6 @@ main{
     justify-content:space-around;
     align-items:center;
     justify-content:center;
-    font-family: Montserrat, tahoma, serif;
     padding:2vh;
     padding-bottom:20vh;
 }
@@ -144,6 +155,7 @@ main{
 
 h2{
     width:100%;
+    text-transform: capitalize;
 }
 
 figure{
@@ -160,7 +172,7 @@ figure{
     position:relative;
     background:var(--text-color);
     color:white;
-    text-align:center;
+    text-align:center;    
 }
 
 figure figcaption{
@@ -168,7 +180,14 @@ figure figcaption{
     bottom:0px;
     text-align:center;
     width:100%;
-    background:#2441469f;
+    background:#244146ce;
+    padding:5px;
+    text-transform: capitalize;
+    transition: background 0.8s;
+}
+
+figure:hover figcaption{
+    background-color:#ea9e8ccf;
 }
 
 #evaluation{
@@ -272,6 +291,7 @@ figure figcaption{
     height:48px;
     border-radius:50%;
     font-size:1.6em;
+    background-color:var(--main-background);
 }
 
 #toastError{
@@ -290,6 +310,24 @@ figure figcaption{
 
 #toastError.active{
     right:50px;
+}
+
+#evaluation input[type=submit], #uploader input[type=submit]{
+    padding:5px;
+    font-size:1.3em;
+}
+
+#uploader h4{
+    font-size:1.3em;
+    color:var(--text-color);    
+}
+
+#uploader a{
+    text-decoration:none;
+}
+
+#uploader h4:hover{
+    text-decoration: underline;
 }
 
 @media(orientation:landscape){
@@ -401,4 +439,8 @@ body.dark{
     --main-background: #0a0c0c;
 	--buttons-color: #244146;
 	--text-color: #517379;
+}
+
+body.dark #darkMode{
+    background-color:#a9e5f0;
 }
