@@ -158,21 +158,22 @@ h2{
     text-transform: capitalize;
 }
 
+main a>figure>img, main a>figure>video{
+    max-width:80vw;
+    margin:20px;
+}
+
 figure{
     margin:15px;
-}
-
-main a>figure>img, main a>figure>video{
-    max-width:90vw;
-}
-
-figure{
     width:90vw;
     min-height:10vh;
     position:relative;
     background:var(--text-color);
     color:white;
-    text-align:center;    
+    text-align:center;   
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 figure figcaption{
@@ -425,20 +426,20 @@ figure:hover figcaption{
     }
 
     main a>figure>img, main a>figure>video{
-        max-width:15vw;
-        max-height:15vh;
+        max-width:16vw;
+        max-height:16vh;
     }
 
     main a>figure{
-        width:15vw;
-        height:15vh;
+        width:18vw;
+        height:20vh;
     }
 }
 
 body.dark{
     --main-background: #0a0c0c;
 	--buttons-color: #244146;
-	--text-color: #517379;
+	/*--text-color: #517379;*/
 }
 
 body.dark #darkMode{
