@@ -6,6 +6,4 @@ if(isset($_SESSION['dark'])){
 else{
     $_SESSION['dark']=true;
 }
-
-var_dump($_SESSION);
 ?>

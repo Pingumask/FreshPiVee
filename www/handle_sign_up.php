@@ -1,4 +1,5 @@
 <?php
+require_once("./model/User.class.php");
 require_once("./model/session.php");
 
 if((!isset($_POST['nickname']) || !isset($_POST['email']) || !isset($_POST['password']) || !isset($_POST['confirmPassword']) || !isset($_POST['birthday']))){

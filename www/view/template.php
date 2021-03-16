@@ -8,7 +8,7 @@
         <?php include("view/components/top_menu.php");?>
         <?php if(isset($_SESSION['error'])) include("view/components/toast_error.php");?>
         <main page="<?=$currentPage;?>">
-            <?php include("view/pages/$currentPage.php");?>
+            <?php require("view/pages/$currentPage.php");?>
         </main>
         <?php include("view/components/nav_menu.php");?>
     </body>

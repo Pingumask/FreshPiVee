@@ -42,7 +42,7 @@ class User implements databaseObject{
      * 
      * @return User Le user qui vient d'être créé
      */
-    public static function create(string $nickname, string $email, string $password, string $birthday){
+    public static function create(string $nickname, string $email, string $password, string $birthday):User{
         $newUser=new User();
         $newUser->nickname = $nickname;
         $newUser->email = $email;        
@@ -117,7 +117,7 @@ class User implements databaseObject{
                 ":birthday"=>$this->birthday, 
                 ":signed_up"=>$this->signed_up
             ]);
-            if($reussite===true){
+            if($reussite){
                 $this->id_user=$GLOBALS['database']->lastInsertId();
             }
         }
@@ -127,7 +127,7 @@ class User implements databaseObject{
      * Crée un User tout en vérifiant que les données envoyées soient valides
      * 
      * Vérifie que le pseudo fasse minimum 8 caracteres
-     * Vérifie que le mot de passe fasse minimum 8 caraacteres
+     * Vérifie que le mot de passe fasse minimum 8 caracteres
      * Vérifie que le mot de passe contient une lettre minuscule
      * Vérifie que le mot de passe contient une lettre majuscule
      * Vérifie que le mot de passe contient un chiffre
@@ -190,7 +190,7 @@ class User implements databaseObject{
     public static function loadByEmailAndPassword(string $email, string $password):User{
         $requete_preparee = $GLOBALS['database']->prepare(
             "SELECT * FROM user 
-            WHERE `email`=:email AND
+            WHERE `email`=:email AND 
             `password`= SHA1(CONCAT(:salt,:pwd,`signed_up`))
             LIMIT 1"
         );
